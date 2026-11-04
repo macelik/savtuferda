@@ -133,6 +133,8 @@ def main(src, dst):
                       "Tanımlar A2–B1 seviyesine sadeleştirilmiştir; örnek cümleler özgün olarak hazırlanmıştır."],
         },
         "request": {k: meta.get(k, '') for k in ('author', 'source', 'level', 'source_type')} | {"notes": notes},
+        "parse": [f"TODO: unit {i+1}: every verb -> mazi/muzari + root + meaning; subject; object (incl. attached pronouns)"
+                  for i in range(len(units))],
         "poem": units, "rows": rows, "cards": cards,
     }
     pathlib.Path(dst).parent.mkdir(parents=True, exist_ok=True)

@@ -430,7 +430,7 @@ grow:`<path d="M20 150 H220" class="s"/>
 ${[[50,60,-8],[80,90,4],[110,70,-4],[135,105,6],[165,75,-6],[192,55,5]].map(([x,h,b],i)=>`<path d="M${x} 150 Q${x+b} ${150-h/2} ${x+b*2} ${150-h}" class="s" stroke-width="4" style="transform-origin:50% 100%;animation:mgGrow 3.4s ${i*.15}s ease-out infinite"/>`).join('')}
 <text x="120" y="172" text-anchor="middle" class="lbl">{{cap}}</text>`,
 shart:`<circle cx="60" cy="80" r="40" class="s"/><circle cx="180" cy="80" r="40" class="s"/>
-<text x="60" y="88" text-anchor="middle">{{a}}</text><text x="180" y="88" text-anchor="middle">{{b}}</text>
+<text x="60" y="88" text-anchor="middle" style="font-size:{{aFs}}px">{{a}}</text><text x="180" y="88" text-anchor="middle" style="font-size:{{bFs}}px">{{b}}</text>
 <path d="M104 80 H136" class="s soft"/><circle r="6" class="f" style="offset-path:path('M100 80 L140 80');animation:mgTravel 1.8s ease-in-out infinite"/>
 <text x="60" y="142" text-anchor="middle" class="lbl">{{aTr}}</text><text x="180" y="142" text-anchor="middle" class="lbl">{{bTr}}</text>
 <text x="120" y="172" text-anchor="middle">{{mid}}</text>`,
@@ -458,7 +458,8 @@ const MGT={point:{cap:'tam olarak bunu'},rise:{cap:'yukarı doğru'},deflate:{a:
   dim:{cap:'ışığı kıt'},grow:{cap:'yeşerir, büyür'},shart:{a:'شَرْط',b:'جَوَاب',aTr:'eğer…',bTr:'…o zaman',mid:''},birds:{cap:'süzülür, uçar'},
   shout:{cap:'yüksek sesle'},break:{cap:'kırılır'},embrace:{cap:'kucaklar, sarar'},vanish:{cap:'buharlaşıp kaybolur'}};
 const escT=t=>String(t).replace(/[&<>]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
-const mgSvg=i=>{const c=C[i],k=MG[c.mg]?c.mg:'radiate',t=Object.assign({},MGT[k]||{},c.mgText||{});
+const fitFs=w=>{const n=bare(w||'').length;return n>9?11:n>6?14:20};
+const mgSvg=i=>{const c=C[i],k=MG[c.mg]?c.mg:'radiate',t=Object.assign({},MGT[k]||{},c.mgText||{});t.aFs=fitFs(t.a);t.bFs=fitFs(t.b);
   return `<svg class="mg" viewBox="0 0 240 180" role="img" aria-label="${GIST[i]}">${MG[k].replace(/\{\{(\w+)\}\}/g,(_,n)=>escT(t[n]||''))}</svg>`};
 
 /* ---------- root highlighting ---------- */
