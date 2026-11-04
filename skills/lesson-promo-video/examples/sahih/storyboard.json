@@ -1,0 +1,205 @@
+{
+ "title": "Arapça Atölye Reel",
+ "handle": "@savtuferda",
+ "lesson": "lesson.json",
+ "scenes": [
+  {
+   "type": "hook",
+   "eyebrow": "Çizgi film &amp; şiir atölyelerimiz",
+   "line1": "Derslerimizi",
+   "line2": "nasıl işliyoruz?",
+   "short": 2.8,
+   "k": 0.6,
+   "say": "Arapça çizgi film ve şiir atölyelerimizde dersleri nasıl işliyoruz?",
+   "say_short": "Derslerimizi nasıl işliyoruz?",
+   "note": "Merak uyandıran, sıcak bir tonla."
+  },
+  {
+   "type": "motto",
+   "eyebrow": "Mottomuz",
+   "items": [
+    {
+     "ar": "اِسْتَمِعُوا،",
+     "tr": "Dinleyin,"
+    },
+    {
+     "ar": "وَاسْتَمْتِعُوا...",
+     "tr": "keyif alın"
+    },
+    {
+     "ar": "وَاسْتَفِيدُوا!",
+     "tr": "ve istifade edin!"
+    }
+   ],
+   "short": 3.8,
+   "k": 0.5,
+   "say": "Önce mottomuzla başlayalım: اِسْتَمِعُوا، وَاسْتَمْتِعُوا… وَاسْتَفِيدُوا! Yani: Dinleyin, keyif alın ve istifade edin!",
+   "say_short": "اِسْتَمِعُوا، وَاسْتَمْتِعُوا… وَاسْتَفِيدُوا!",
+   "note": "Her Arapça kelimeyi ekrana geldiği anda söyleyin."
+  },
+  {
+   "type": "verse",
+   "eyebrow": "Diyelim ki bir şiir dinledik…",
+   "before": [
+    "كنت أَمشي فوق مُنْحَدَرٍ وأَهْجِسُ:",
+    "كيف يختلف الرُّواةُ على كلام الضوء في حَجَرٍ؟"
+   ],
+   "after": [
+    "أسير في نومي. أَحملق في منامي."
+   ],
+   "line": "أَمِنْ حَجَرٍ <mark>شَحِيحِ</mark> الضَّوْءِ تَنْدَلِعُ الحُرُوبُ؟",
+   "tr": "“Işığı kıt bir taştan mı savaşlar patlak verir?”",
+   "caption": "…ve bir dize <b>kulağımıza takıldı.</b>",
+   "short": 4.0,
+   "k": 0.5,
+   "say": "Diyelim ki harika bir şiir dinledik ve bir dize kulağımıza takıldı. Şair diyor ki: أَمِنْ حَجَرٍ شَحِيحِ الضَّوْءِ…",
+   "say_short": "Bir dize kulağımıza takıldı: أَمِنْ حَجَرٍ شَحِيحِ الضَّوْءِ…"
+  },
+  {
+   "type": "zoom",
+   "word": "شَحِيح",
+   "q1": "“Şahîh” mi?",
+   "q2": "O da ne demek?",
+   "caption": "Hemen durup kelimeyi <b>mercek altına</b> alıyoruz.",
+   "short": 2.6,
+   "k": 0.55,
+   "say": "“Şahîh” mi? O da ne demek? Hemen durup kelimeyi mercek altına alıyoruz.",
+   "say_short": "“Şahîh” ne demek?",
+   "note": "Gerçekten şaşırmış gibi, gülümseyerek."
+  },
+  {
+   "type": "root",
+   "title": "Köke iniyoruz",
+   "from_card": 8,
+   "caption": "Mazisi, muzarisi, masdarı nedir?",
+   "short": 3.0,
+   "k": 0.55,
+   "say": "Önce köküne iniyoruz: Mazisi, muzarisi, masdarı nedir?",
+   "say_short": "Kökü,"
+  },
+  {
+   "type": "harf",
+   "title": "Hangi harf-i cer?",
+   "from_card": 8,
+   "example": {
+    "ar": "هُوَ شَحِيحٌ <b>بِ</b>مَالِهِ.",
+    "tr": "Malında cimridir."
+   },
+   "short": 2.0,
+   "k": 0.5,
+   "say": "Hangi harf-i cerlerle kullanılır?",
+   "say_short": "harf-i cerleri,"
+  },
+  {
+   "type": "syn",
+   "title": "Eş ve zıt anlamlılar",
+   "from_card": 8,
+   "syn": [
+    "بَخِيلٌ",
+    "قَلِيلٌ"
+   ],
+   "ant": [
+    "كَرِيمٌ",
+    "وَفِيرٌ"
+   ],
+   "caption": "cimri, az <b>↔</b> cömert, bol",
+   "short": 2.0,
+   "k": 0.5,
+   "say": "Eş ve zıt anlamlıları neler?",
+   "say_short": "eş ve zıt anlamlıları,"
+  },
+  {
+   "type": "context",
+   "title": "Bağlam ve mecaz",
+   "from_card": 8,
+   "rows": [
+    {
+     "tr": "insan → <span style=\"color:var(--gold2)\">cimri</span>",
+     "ar": "رَجُلٌ شَحِيحٌ"
+    },
+    {
+     "tr": "su, ışık → <span style=\"color:var(--gold2)\">kıt</span>",
+     "ar": "مَاءٌ شَحِيحٌ"
+    }
+   ],
+   "short": 2.2,
+   "k": 0.5,
+   "say": "Bağlama göre anlamı nasıl değişir, mecazda nasıl karşılık bulur?",
+   "say_short": "mecazı,"
+  },
+  {
+   "type": "press",
+   "title": "Basın Arapçasında",
+   "from_card": 8,
+   "ar": "تُعَانِي المِنْطَقَةُ مِنْ مَوَارِدَ مَائِيَّةٍ <span class=\"rl\">شَحِيحَةٍ</span>.",
+   "short": 1.8,
+   "k": 0.5,
+   "say": "Basın-yayın Arapçasında bu kalıp haberlere nasıl yansır?",
+   "say_short": "basındaki kullanımı,"
+  },
+  {
+   "type": "ayah",
+   "title": "Kur’ân-ı Kerîm’de",
+   "from_card": 8,
+   "ar": "وَمَن يُوقَ <span style=\"color:var(--gold)\">شُحَّ</span> نَفْسِهِ فَأُولَٰئِكَ هُمُ الْمُفْلِحُونَ",
+   "tr": "“Kim nefsinin cimriliğinden korunursa, işte kurtuluşa erenler onlardır.”",
+   "short": 2.4,
+   "k": 0.5,
+   "say": "Ve elbette, Kur'ân-ı Kerîm'de geçiyorsa, ayetten somut bir örnekle hafızamıza nakşediyoruz.",
+   "say_short": "ve Kur'ân'daki yeri.",
+   "note": "Biraz daha yavaş ve vakur."
+  },
+  {
+   "type": "literary",
+   "eyebrow": "Dizelerin ardında",
+   "title": "edebî incelikler",
+   "line": "Taş, ışığını <b style=\"color:var(--gold)\">esirgeyen cimri biri</b> gibi:",
+   "big": "istiare",
+   "caption": "Şair o mısrada asıl ne anlatmak istiyor? <b>Birlikte keşfediyoruz.</b>",
+   "say": "Şiir atölyesinde sadece kelimelerle kalmıyoruz; dizelerin ardındaki edebî incelikleri birlikte keşfediyoruz."
+  },
+  {
+   "type": "punch",
+   "q": "Peki bitti mi?",
+   "a": "Tabii ki hayır!",
+   "say": "Peki bitti mi? Tabii ki hayır!",
+   "note": "Enerjik, hafif gülerek."
+  },
+  {
+   "type": "quiz",
+   "eyebrow": "İnteraktif pratik",
+   "title": "Boşluğu doldur",
+   "before": "أَمِنْ حَجَرٍ",
+   "after": "الضَّوْءِ تَنْدَلِعُ الحُرُوبُ؟",
+   "options": [
+    "تُصَوِّبُنِي",
+    "شَحِيحِ",
+    "مُنْحَدَرٍ",
+    "صَاحَتْ"
+   ],
+   "answer": "شَحِيحِ",
+   "caption": "Öğrendiğimizi <b>anında üretime</b> dönüştürüyoruz.",
+   "say": "Öğrendiğimiz yapıyı anında üretime dönüştürmek için interaktif sorularla pratik yapıyoruz."
+  },
+  {
+   "type": "statement",
+   "strike": "pasif dinleyici",
+   "line1": "Tek bir kelimenin,<br>tek bir mısranın izinde",
+   "line2": "dili derinlemesine kavrayın.",
+   "caption": "Öğrendiklerinizi <b>doğrudan hayata geçirin.</b>",
+   "say": "Böylece pasif dinleyici olmaktan çıkıp dili derinlemesine kavrıyorsunuz."
+  },
+  {
+   "type": "cta",
+   "motto": "اِسْتَمِعُوا، وَاسْتَمْتِعُوا... وَاسْتَفِيدُوا!",
+   "title": "Bu yolculuğa<br>siz de katılın",
+   "sub": "Arapça çizgi film &amp; şiir atölyeleri",
+   "button": "Detaylar için DM’den yazın",
+   "short": 3.4,
+   "k": 0.6,
+   "say": "Siz de bu yolculuğa katılmak isterseniz, detaylar için bize DM'den yazın.",
+   "say_short": "Siz de katılın; detaylar için DM'den yazın!",
+   "note": "Sıcak, davetkâr; sondan sonra 1–2 saniye sessizlik."
+  }
+ ]
+}

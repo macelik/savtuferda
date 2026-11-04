@@ -1,86 +1,97 @@
-# savtuferda
+# lesson-promo-video
 
-Teaching materials and promo videos for **@savtuferda**: Arabic cartoon and poetry workshops for Turkish speakers (A2–B2).
+An agent skill that turns an **Arabic lesson** and the **teacher's script** into promo videos for [@savtuferda](https://instagram.com/savtuferda)'s workshops. It produces:
 
-This repo contains two pipelines:
+- a **long cut** (Instagram Reel, usually 60–80 s) and a **~30 s cut** (Story / Shorts), both 1080×1920 MP4;
+- a **cover image**;
+- a **Turkish voice-over sheet** (`seslendirme.md`) with timestamps and `[[…]]` stage notes, so the teacher can record her narration in sync.
 
-1. **Lesson pages:** an Arabic text (poem, prose, cartoon dialogue) plus the target words go in, and a single self-contained interactive HTML lesson comes out. The teacher presents it in class, and students can open it on their phones.
-2. **Promo videos:** a 1080×1920 animated Reel/Short/Story is generated from HTML/CSS. Frames are captured in headless Chromium and encoded with ffmpeg.
+The videos are silent on purpose: she records her own voice and adds music in Instagram or CapCut. Every scene has on-screen text, so they also work muted.
 
-## Repository layout
+Example output: [`showcase/`](showcase/) (the published Reel, the 30 s cut and the cover).
+
+It works with the companion skill **`arabic-lesson-page`**, which builds the lesson page this skill reads. The two are separate repos and separate skills.
+
+## How it works
+
+1. The agent maps each idea in her script to a **scene type**: hook, motto, verse, zoom, the six "lens" steps on the word (root, preposition, synonyms, context/figurative, press, Qur'an), literary analysis, punch line, quiz, statement, call to action.
+2. It writes a `storyboard.json`. The step scenes fill themselves from the lesson (`"from_card": 8`): root letters, mazi/muzari/masdar, prepositions, synonyms, the press example and the ayah all come from the already-checked lesson data.
+3. `compose.py` builds both timelines and the voice-over sheet. Each scene's length follows what she says in it.
+4. `stills.js` shows one still per scene for review; `render.js` captures every frame in headless Chromium and encodes with ffmpeg.
+
+The worked example in [`skills/lesson-promo-video/examples/sahih/`](skills/lesson-promo-video/examples/sahih/) regenerates the published Reel from her original script.
+
+## Install
+
+### Option 1: the `skills` CLI (Claude Code, Codex, OpenCode, …)
+
+Needs Node 22+.
+
+```bash
+npx skills add macelik/savtuferda --skill lesson-promo-video -a claude-code
+```
+
+```bash
+npx skills add macelik/savtuferda --skill lesson-promo-video -a codex
+```
+
+```bash
+npx skills add macelik/savtuferda --skill lesson-promo-video -a opencode
+```
+
+Add `-g` to install for all projects. `-a` can be repeated to install into several agents at once. (If this skill moves to its own repository, replace `macelik/savtuferda` with that repository's `owner/name`.)
+
+### Option 2: Claude Code plugin
 
 ```
-lesson/
-  src/template.html           the lesson page (CSS + JS + motion graphics); data is injected at __DATA__
-  data/<name>.json            one file per lesson: all content (see docs/lesson-page-instructions.md §5)
-  build.py                    validate JSON + render -> lesson/output/<Name>-Ders.html
-  tools/check.js              headless QA: console errors, overflow, screenshots
-  tools/extract_legacy.py     import an old long-scroll lesson HTML into the JSON shape
-  source/                     the teacher's original hand-made HTML (input for the first lesson)
-  output/                     built lesson pages (deliverables)
-video/
-  src/scene.html              the promo video composition (15 scenes, CSS animation)
-  build.py                    -> video/build/full.html (75 s) + short.html (30 s cut)
-  render.js                   frame-accurate capture -> MP4
-  stills.js                   preview single frames
-  output/                     delivered MP4s + cover image
-docs/
-  lesson-page-instructions.md the brief for generating new lesson pages (pedagogy, data, design, accuracy)
-  video-pipeline.md           how the video system works and how to make a new one
-  reel-voiceover-cues.md      voice-over timing sheet for the 75 s Reel
-CLAUDE.md                     working agreement for agents picking up this repo
+/plugin marketplace add macelik/savtuferda
+/plugin install lesson-promo-video@lesson-promo-video
 ```
 
-## Requirements
+### Option 3: copy the folder
 
-- Python 3.9+. `build.py` uses only the standard library; `extract_legacy.py` needs `beautifulsoup4`.
-- Node 18+ with `playwright` and a Chromium for it, used by `check.js`, `render.js` and `stills.js`.
+Copy `skills/lesson-promo-video` into the folder your agent reads:
+
+| Harness | This project only | All projects |
+|---|---|---|
+| Claude Code | `.claude/skills/` | `~/.claude/skills/` |
+| Codex | `.agents/skills/` | `~/.agents/skills/` (older Codex: `~/.codex/skills/`) |
+| OpenCode | `.opencode/skills/` | `~/.config/opencode/skills/` |
+
+OpenCode also reads `.claude/skills/` and `.agents/skills/`. Restart the agent after installing.
+
+### Requirements
+
+- Python 3.9+ (standard library only).
+- Node 18+ with Playwright and Chromium: in your project run `npm i -D playwright`, then `npx playwright install chromium`.
 - `ffmpeg` with libx264.
-- Network access to `fonts.googleapis.com` (Amiri, Alegreya, Alegreya Sans).
+- Internet access while rendering (Google Fonts: Amiri, Alegreya).
 
-On a fresh machine:
+## Use
 
-```bash
-npm install
+1. Fill in [`templates/video-request.md`](skills/lesson-promo-video/templates/video-request.md): the handle, the lesson file, which word (card) to feature, the motto, and her script.
+2. Ask your agent:
+
+   > Make the promo videos for `request.md` with the lesson-promo-video skill.
+
+   To call the skill explicitly, type `/lesson-promo-video` in Claude Code or `$lesson-promo-video` in Codex. In OpenCode, name the skill in your request.
+3. You get `videos/<slug>/<slug>-uzun.mp4`, `<slug>-kisa.mp4`, `<slug>-kapak.jpg` and `seslendirme.md`.
+
+Rendering takes about 4 s per second of video, so roughly 5 minutes for the long cut and 2 for the short one.
+
+## Layout
+
 ```
-
-```bash
-npx playwright install chromium
+skills/lesson-promo-video/
+  SKILL.md                     instructions the agent follows
+  assets/scene-kit.html        shared look + scene system (CSS animation, seekable)
+  scripts/compose.py           storyboard -> full.html, short.html, seslendirme.md, timeline.json
+  scripts/stills.js            one still per scene (review before rendering)
+  scripts/render.js            frame-accurate capture -> MP4
+  references/scene-types.md    every scene type, its fields, timing and layout rules
+  templates/video-request.md   the form the teacher fills in
+  examples/sahih/              lesson + her script + the storyboard of the published Reel
+showcase/                      published videos (not installed with the skill)
+.claude-plugin/                Claude Code plugin + marketplace manifests
+AGENTS.md                      guide for agents developing this skill
 ```
-
-```bash
-pip install -r requirements.txt
-```
-
-(In Claude Code cloud sessions, Playwright and Chromium are preinstalled: skip `playwright install`.)
-
-## Quick start
-
-```bash
-python3 lesson/build.py lesson/data/kudus-mahmud-dervis.json lesson/output/Kudus-Mahmud-Dervis-Ders.html
-```
-
-```bash
-node lesson/tools/check.js lesson/output/Kudus-Mahmud-Dervis-Ders.html qa/
-```
-
-```bash
-python3 video/build.py
-```
-
-```bash
-node video/render.js video/build/short.html video/output/Arapca-Atolye-30sn.mp4 30
-```
-
-Open any `lesson/output/*.html` directly in a browser. It needs no server.
-
-## Lesson page in brief
-
-Three views:
-- **Şiir/Metin:** the full text, with the target words clickable and line-by-line reading mode.
-- **Kelimeler:** one slide per word. A dark stage on the left shows the word, its transliteration and a looping motion graphic. Step tabs on the right go Şiirde → Kök (animated root letters, mazi/muzari/masdar with root letters in gold) → Anlam → Harf-i cer → Örnekler (level filter) → Ayetler → Konuşalım (60-second timer).
-- **Pratik:** a fill-in-the-blank quiz and flip cards.
-
-Turkish translations are blurred until tapped, or `T` reveals them all. Keys: `←`/`→` words, Space next step, `F` fullscreen. Light and dark themes are supported, and the page works on phones.
-
-The first lesson: **«في القدس»** by Mahmud Derviş, with 15 words and one conditional sentence.

@@ -1,0 +1,8 @@
+{
+  "name": "lesson-promo-video",
+  "version": "1.0.0",
+  "description": "Instagram Reel/Story/Shorts promo videos (long + ~30 s cut, 1080x1920) and a timed Turkish voice-over sheet for @savtuferda Arabic lessons, from a lesson page and the teacher's script.",
+  "author": { "name": "macelik" },
+  "repository": "https://github.com/macelik/savtuferda",
+  "keywords": ["arabic", "language-teaching", "instagram", "reel", "video", "skill"]
+}

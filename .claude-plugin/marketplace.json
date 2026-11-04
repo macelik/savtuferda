@@ -1,0 +1,12 @@
+{
+  "name": "lesson-promo-video",
+  "owner": { "name": "macelik" },
+  "metadata": { "description": "Promo-video skill for @savtuferda Arabic workshops" },
+  "plugins": [
+    {
+      "name": "lesson-promo-video",
+      "source": "./",
+      "description": "Lesson + script -> long and short promo videos (MP4) + Turkish voice-over sheet."
+    }
+  ]
+}
