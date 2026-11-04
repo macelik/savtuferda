@@ -80,14 +80,21 @@ def ar(text):
 # Each returns inner HTML of one <section>. Element entrances use --r (seconds after scene start);
 # the short cut compresses them with --k. Markup mirrors the original hand-made Reel.
 
+def fit_h1(*lines):
+    n = max(len(plain(x)) for x in lines if x) if any(lines) else 0
+    return 112 if n <= 16 else 92 if n <= 21 else 76
+
+
 def r_hook(s, ctx):
+    fs = fit_h1(s.get('line1', ''), s.get('line2', ''))
+    glyph = s.get('glyph', '؟')
+    g = f'''\n  <p class="ar a blur" lang="ar" style="--r:1.3s;position:absolute;left:0;right:0;top:1060px;text-align:center;font-size:260px;line-height:1;color:var(--gold);opacity:.9">{glyph}</p>''' if glyph else ''
     return f'''  <div class="rays spin" style="top:860px">{RAYS}</div>
   <div class="center" style="top:560px"><p class="eyebrow a up" style="--r:.2s">{lit(s.get('eyebrow',''))}</p></div>
   <div class="center" style="top:700px">
-    <p class="h1 a up" style="--r:.5s">{lit(s['line1'])}</p>
-    <p class="h1 a up" style="--r:.8s;color:var(--gold)">{lit(s.get('line2',''))}</p>
-  </div>
-  <p class="ar a blur" lang="ar" style="--r:1.3s;position:absolute;left:0;right:0;top:1060px;text-align:center;font-size:260px;line-height:1;color:var(--gold);opacity:.9">{lit(s.get('glyph','؟'))}</p>'''
+    <p class="h1 a up" style="--r:.5s;font-size:{fs}px">{lit(s['line1'])}</p>
+    <p class="h1 a up" style="--r:.8s;color:var(--gold);font-size:{fs}px">{lit(s.get('line2',''))}</p>
+  </div>{g}'''
 
 
 def r_motto(s, ctx):
@@ -199,7 +206,7 @@ def r_press(s, ctx):
     <div style="background:#9c4536;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:16px 34px;font-weight:800;font-size:34px;letter-spacing:.12em"><span>HABER</span><span class="ar" lang="ar" style="font-size:44px;letter-spacing:0;line-height:1.2">أخبار</span></div>
     <div style="padding:34px 44px">
       <p class="ar" lang="ar" style="font-size:70px;line-height:1.55;font-weight:700">{s['ar']}</p>
-      <p class="tr" style="text-align:left;margin-top:18px">{lit(s.get('tr',''))}</p>
+      <p class="tr" style="text-align:left;margin-top:18px;color:#66736b;font-size:40px">{lit(s.get('tr',''))}</p>
     </div>
   </div>'''
 
@@ -403,6 +410,8 @@ def main(sb_path, out_dir):
         s = fill_from_card(s, cards)
         for f in REQUIRED[s['type']]:
             if not s.get(f): errs.append(f'scene {i} ({s["type"]}): missing "{f}"')
+        if s['type'] == 'hook' and s.get('glyph') not in (None, '', '؟', '?'):
+            errs.append(f'scene {i} (hook): "glyph" is the big question mark; use "؟" (default) or "" for none')
         if s['type'] == 'quiz' and s.get('answer') not in s.get('options', []):
             errs.append(f'scene {i} (quiz): "answer" must be one of "options"')
         if UNSAFE.search(json.dumps(s, ensure_ascii=False)):

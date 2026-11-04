@@ -18,7 +18,7 @@ Text fields accept simple markup: `<b>…</b>` (gold bold in captions), `<br>`, 
 
 | Type | Fields | Min. length | What it shows |
 |---|---|---|---|
-| `hook` | `eyebrow`, `line1`, `line2`, `glyph` (default `؟`) | 4.6 s | Big two-line question with rotating light rays. |
+| `hook` | `eyebrow`, `line1`, `line2`, `glyph` (`؟` by default, `""` for none; nothing else) | 4.6 s | Big two-line headline with rotating light rays. Long lines shrink automatically; keep each line under ~20 characters. Use the `؟` only when the headline is a question. |
 | `motto` | `eyebrow`, `items`: 1–3 × `{ar, tr}` | 6.0 s | Arabic words pop in one by one (at +0.5, +1.8 and +3.1 s), each with its Turkish meaning; the last one is gold. |
 | `verse` | `eyebrow`, `before`: ≤ 2 Arabic context lines, `line` (Arabic with one `<mark>`), `tr`, `after`: ≤ 1 line, `caption` | 6.4 s | Text lines fade back; the target line pops forward as a card (+2.4 s) with its translation. |
 | `zoom` | `word`, `q1`, `q2`, `caption` | 4.4 s | The word huge under a magnifier, plus two lines of question. |
