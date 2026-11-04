@@ -42,7 +42,7 @@ Write every Arabic string with **full harakat**. Write every Turkish string in n
 | Field | What to write |
 |---|---|
 | `word` | The target word **exactly as vowelled in the text**; if the text has no harakat, add them (e.g. `يَتَسَلَّقُ`). For a phrase, the whole phrase. |
-| `translit` | `"yanjalī <span class=\"sep\">·</span> fiil · VII. bab, muzari"`. Before the separator: the word **as vowelled in the text**, transliterated with this scheme: ā ī ū · ʾ (hamza) · ʿ (ʿayn) · ṯ (ث) · ḥ (ح) · ḫ (خ) · ḏ (ذ) · š (ش) · ṣ (ص) · ḍ (ض) · ṭ (ط) · ẓ (ظ) · ġ (غ) · q (ق). Write every short vowel, e.g. `yuʿāniqhu`, `wa-ndaṯar`, `al-qadar`. After the separator: a short Turkish grammar label. |
+| `translit` | `"yanjalī <span class=\"sep\">·</span> fiil · VII. bab, muzari"`. Before the separator: the word **as vowelled in the text**, transliterated with this scheme: ā ī ū · ʾ (hamza) · ʿ (ʿayn) · ṯ (ث) · ḥ (ح) · ḫ (خ) · ḏ (ذ) · š (ش) · ṣ (ص) · ḍ (ض) · ṭ (ط) · ẓ (ظ) · ġ (غ) · q (ق). Write every short vowel, e.g. `yuʿāniqhu`, `wa-ndafaʿa`, `al-qadar`; never drop a vowel between consonants. After the separator: a short Turkish grammar label. |
 | `levels` | How hard the **word itself** is for a learner: everyday words `["A2","B1"]`, literary or rare words `["B1"]` or `["B1","B2"]`. This is a label for the word; it is **not** a list of the example levels (examples always span A2–B2). |
 | `gist` | 1–3 Turkish words: the core meaning (`yükselmek`, `patlak vermek`). It appears under the animation and on the flash card. |
 | `mg` | The motion-graphic key that best shows the meaning, from the table below. |
@@ -80,13 +80,19 @@ Every example must be **original** and natural. Don't copy a sentence from the t
 
 ## Translating literary Arabic
 
-Most mistakes come from misreading who does what to whom. For **each** text unit, before translating, work out silently:
-1. the verbs, with their roots and forms;
-2. the subject (فَاعِل) of each verb;
-3. the object (مَفْعُول), **including attached pronouns** (ـهُ، ـهَا، ـنِي…).
+Most mistakes come from misreading who does what to whom. For **each** text unit, fill in the matching entry of the top-level `parse` list **before** you translate. The page doesn't show it, but it makes the reasoning explicit and checkable:
 
-Then translate. Check yourself against these traps:
+```json
+"parse": [
+  "أَدْرَكَهُ ← أَدْرَكَ/يُدْرِكُ (د-ر-ك) yetişmek · özne: المَوْتُ · nesne: ـهُ (= الرَّجُلُ)",
+  "لَمْ يَرُمْهُ ← رَامَ/يَرُومُ (ر-و-م) istemek, hedeflemek · cezm → ecvef, orta harf düştü · özne: … · nesne: ـهُ"
+]
+```
+
+For every verb, give its mazi/muzari, root and meaning, its subject, and its object, **including attached pronouns** (ـهُ، ـهَا، ـنِي…). Translate only after the parse. Check yourself against these traps:
 - **Word order is often verb–object–subject.** In «أَدْرَكَهُ المَوْتُ», the ـهُ is the object and المَوْتُ is the subject: "death overtook him". It does **not** mean "he reached death". Likewise «مَنْ لَمْ تُغْرِهِ الدُّنْيَا» means "whom the world did not tempt".
+- **Doubled or hollow? Check the letters, not your first guess.** In the jussive (after لَمْ / لَا النَّاهِيَة) a **doubled** verb keeps its shadda: «لَمْ يَرُدَّهُ» ← رَدَّ (ر-د-د). A **hollow** verb loses its long vowel and has *no* shadda: «لَمْ يَرُمْهُ» ← رَامَ / يَرُومُ (ر-و-م). So a jussive like C-u-C with sukun and no shadda (يَرُمْ، تَخُنْ، يَقُلْ) comes from a hollow root (middle و/ي). Write that root in `parse`, and choose the meaning from **that** root.
+- **Strip the pattern letters before naming the root.** Derived forms add letters that are not part of the root: اِسْتَـ (X), اِنْـ (VII), اِفْتَعَلَ's تـ (VIII), تَـ (V/VI), أَ (IV), مُـ / مَـ (participles, nouns of place). For example, «يَسْتَجِيبُ» is X. bab, and its root is ج-و-ب, not س-ج-ب; «مُنْتَصِر» has the root ن-ص-ر. A root is (almost always) three letters that also appear in the plain Form I word (جَوَاب، نَصْر).
 - **A hollow verb after لَمْ / لَا (jussive) loses its long vowel.** «لَمْ تَخُنْهُ» comes from خَانَ / يَخُونُ ("to betray"), so it means "did not betray him". It is not from a root خ-ن-ن. Always restore the full root before translating: يَقُلْ ← قَالَ, يَكُنْ ← كَانَ, تَخُنْ ← خَانَ, يَبِعْ ← بَاعَ. Look the root up in your head before choosing a meaning.
 - **Figurative subjects.** Night, fate, death and nothingness act like people in poetry. Keep the image in Turkish; don't flatten it.
 - **Translate the meaning, keep the image.** "Zincirin de kırılması kaçınılmazdır" is good. Don't paraphrase the line into an explanation.
@@ -137,7 +143,7 @@ Captions are tiny labels inside the animation. Each key has a generic default. S
 "mg": "shart", "mgText": {"a": "اِجْتِهَاد", "b": "نَجَاح", "aTr": "çalışırsan", "bTr": "başarırsın"}
 ```
 
-Never reuse captions from another lesson. A structure card with `mg: "shart"` **must** set `mgText`.
+Never reuse captions from another lesson. A structure card with `mg: "shart"` **must** set `mgText`. For `shart`, `a` and `b` go inside small circles: use **one word each** (e.g. `إِرَادَة` / `اِسْتِجَابَة`, not a whole clause). The page shrinks long labels, but one word reads best.
 If two consecutive cards would get the same key, choose a different fitting key for one of them.
 
 ## Meta
@@ -145,10 +151,11 @@ If two consecutive cards would get the same key, choose a different fitting key 
 - `title`: a short name, e.g. `Hayat İradesi — Ebu'l-Kasım eş-Şabbi`.
 - `brandAr`, `brandTr`: from the request.
 - `sources`: the dictionaries (already filled in), plus one line listing every Quran/hadith reference you used. Delete that TODO line if you used none.
-- `notes[0]`: one Turkish sentence on the text and its **verified** source.
+- `notes[0]`: one Turkish sentence on the text and its **verified** source. Wrap any Arabic inside it as `<span lang="ar" dir="rtl">«…»</span>`, or it renders out of order.
 
 ## Self-review checklist (do this before building)
 
+- [ ] `parse` has one filled entry per unit, and every jussive verb was checked with the doubled-vs-hollow test.
 - [ ] Every unit's Turkish translation matches the parse: subject, object and attached pronouns (re-read units with ـهُ/ـهَا and any verb after لَمْ).
 - [ ] Each `mg` passes the "would a student guess the word" test, and the `mgText` captions are about this text.
 - [ ] `translit` follows the scheme and the text's own vowels; no missing short vowels.

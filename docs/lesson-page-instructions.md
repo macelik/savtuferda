@@ -101,6 +101,7 @@ All content lives in one JSON file in `lesson/data/`. `lesson/build.py` validate
     "sources": ["<span lang=\"ar\">المعجم الوسيط …</span>", "Kur'an-ı Kerim: …"],
     "notes": ["Şiir, Mahmud Derviş'in … şiiridir.", "Tanımlar A2–B1 …"]
   },
+  "parse": ["unit 1: every verb -> mazi/muzari + root + meaning; subject; object", "…"],   // agent's working notes per unit; not shown on the page
   "poem": ["في القدس، <mark>أَعني</mark> داخلَ السُّور القديمِ،", "…"],   // text units, target words in <mark>
   "rows": [["1", "في القدس، أَعني …", "Kudüs'te — yani eski surların içinde,"], "…"],  // [no, Arabic, Turkish], same length as poem
   "cards": [
