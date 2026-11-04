@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Import content from the legacy long-scroll lesson HTML into the JSON shape.
-Usage: python3 -I lesson/tools/extract_legacy.py <old.html> <out.json>  (needs beautifulsoup4)
-Afterwards add meta + per-card gist/mg by hand (see docs/lesson-page-instructions.md)."""
+Usage: python3 -I <skill>/scripts/extract_legacy.py <old.html> <out.json>  (needs beautifulsoup4)
+Afterwards add meta + per-card gist/mg by hand (see SKILL.md and references/lesson-design.md)."""
 import json,sys,re
 from bs4 import BeautifulSoup
 src=sys.argv[1]

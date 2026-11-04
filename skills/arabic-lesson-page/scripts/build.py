@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Build a lesson page: python3 lesson/build.py lesson/data/<name>.json lesson/output/<Name>-Ders.html"""
+"""Build a lesson page: python3 <skill>/scripts/build.py lessons/<slug>/<slug>.json lessons/<slug>/<Name>-Ders.html"""
 import json, sys, html, pathlib, re
 
 MG_KEYS = {'point','aim','rise','deflate','slope','thought','diverge','dim','flame','eye',
-           'radiate','grow','shart','birds','shout','break','embrace','vanish'}  # keep in sync with MG in src/template.html
+           'radiate','grow','shart','birds','shout','break','embrace','vanish'}  # keep in sync with MG in assets/template.html
 REQUIRED_CARD = ['word','translit','levels','verse','verseTr','sarf','sarfNote','def','defTr',
                  'syn','meanings','extras','qs','gist','mg']
 
@@ -53,7 +53,7 @@ def main(src, dst):
     for w in warns: print('warning:', w)
     if errs:
         sys.exit('Data errors:\n  ' + '\n  '.join(errs))
-    t = (here / 'src' / 'template.html').read_text(encoding='utf-8')
+    t = (here.parent / 'assets' / 'template.html').read_text(encoding='utf-8')
     rep = {
         '__TITLE__': html.escape(m['title']),
         '__BRAND_AR__': m['brandAr'], '__BRAND_TR__': m['brandTr'],

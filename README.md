@@ -1,86 +1,110 @@
-# savtuferda
+# savtuferda skills
 
-Teaching materials and promo videos for **@savtuferda**: Arabic cartoon and poetry workshops for Turkish speakers (A2–B2).
+Agent skills for the Arabic workshops of [@savtuferda](https://instagram.com/savtuferda).
 
-This repo contains two pipelines:
+| Skill | What it does |
+|---|---|
+| [`arabic-lesson-page`](skills/arabic-lesson-page/SKILL.md) | You give it an Arabic text (poem, prose, cartoon dialogue, song) with the target words marked. It produces **one self-contained interactive HTML lesson** for Turkish-speaking learners (A2–B2). |
 
-1. **Lesson pages:** an Arabic text (poem, prose, cartoon dialogue) plus the target words go in, and a single self-contained interactive HTML lesson comes out. The teacher presents it in class, and students can open it on their phones.
-2. **Promo videos:** a 1080×1920 animated Reel/Short/Story is generated from HTML/CSS. Frames are captured in headless Chromium and encoded with ffmpeg.
+The lesson page shows three views:
+- **Text:** every target word is clickable, and there is a line-by-line reading mode.
+- **Words:** one slide per word. A looping animation shows the meaning, and step tabs go Şiirde → Kök (animated root letters, mazi/muzari/masdar) → Anlam → Harf-i cer → Örnekler (level filter) → Ayetler → Konuşalım.
+- **Practice:** a fill-in-the-blank quiz built from the text, plus flip cards.
+
+Turkish translations stay blurred until tapped. The page has light and dark themes and works offline except for fonts. It also works on phones and in fullscreen presentation mode.
+
+The skill follows the open `SKILL.md` format, so it works in **Claude Code, Codex and OpenCode**, and in other agents that read the same format.
+
+## Install
+
+### Option 1: the `skills` CLI (any harness)
+
+The [`skills`](https://github.com/vercel-labs/skills) CLI copies the skill into the right folder for each agent. It needs Node 22+.
+
+```bash
+npx skills add macelik/savtuferda --skill arabic-lesson-page -a claude-code
+```
+
+```bash
+npx skills add macelik/savtuferda --skill arabic-lesson-page -a codex
+```
+
+```bash
+npx skills add macelik/savtuferda --skill arabic-lesson-page -a opencode
+```
+
+Add `-g` to install for all your projects instead of only the current one. `-a` can be repeated to install into several agents at once.
+
+### Option 2: Claude Code plugin
+
+Inside Claude Code:
+
+```
+/plugin marketplace add macelik/savtuferda
+/plugin install savtuferda@savtuferda
+```
+
+(Claude Code 2.1.275 or later can also do both in one step: `/plugin install savtuferda --marketplace macelik/savtuferda`.)
+
+### Option 3: copy the folder
+
+```bash
+git clone https://github.com/macelik/savtuferda
+```
+
+Then copy `savtuferda/skills/arabic-lesson-page` into the folder your agent reads:
+
+| Harness | This project only | All projects |
+|---|---|---|
+| Claude Code | `.claude/skills/` | `~/.claude/skills/` |
+| Codex | `.agents/skills/` | `~/.agents/skills/` (older Codex versions: `~/.codex/skills/`) |
+| OpenCode | `.opencode/skills/` | `~/.config/opencode/skills/` |
+
+For example, for Claude Code in the current project:
+
+```bash
+mkdir -p .claude/skills && cp -r savtuferda/skills/arabic-lesson-page .claude/skills/
+```
+
+OpenCode also reads `.claude/skills/` and `.agents/skills/`, so one copy can serve several agents. Restart the agent after installing.
+
+### Requirements
+
+- `python3` 3.9+ (standard library only) to scaffold and build lessons.
+- For the automatic QA step: Node 18+ with Playwright and its Chromium. In your project, run `npm i -D playwright`, then `npx playwright install chromium`.
+- `beautifulsoup4` only if you import a teacher's HTML draft (`pip install beautifulsoup4`).
+- Internet access when the page is opened, for its Google Fonts (Amiri, Alegreya).
+
+## Use
+
+1. Copy [`templates/lesson-request.md`](skills/arabic-lesson-page/templates/lesson-request.md) into your project and fill it in. Put the title, author and source at the top. Write the text one line (or dialogue turn) per row, with the target words in `[[double brackets]]`. The Turkish translation is optional. A teacher's HTML draft with the target words in `<mark>` works too.
+2. Ask your agent:
+
+   > Build the lesson page for `request.md` with the arabic-lesson-page skill.
+
+   To call the skill explicitly, type `/arabic-lesson-page` in Claude Code or `$arabic-lesson-page` in Codex. In OpenCode, name the skill in your request.
+3. The agent writes `lessons/<slug>/<slug>.json` (the content) and `lessons/<slug>/<Name>-Ders.html` (the page). It then runs QA and ends with a short report. The report lists any source or attribution check, corrections it suggests, the Quran citations it used, and its assumptions.
+
+Open the `.html` file in any browser; it needs no server. Keys: `←`/`→` words, Space next step, `T` translations, `F` fullscreen.
+
+**Review before class.** Smaller models do well on the structure, but they can still misread a literary line. The skill makes the agent write a per-line grammatical parse (`parse` in the JSON) so a reviewer can check its reasoning quickly. See [`tests/RESULTS.md`](skills/arabic-lesson-page/tests/RESULTS.md).
 
 ## Repository layout
 
 ```
-lesson/
-  src/template.html           the lesson page (CSS + JS + motion graphics); data is injected at __DATA__
-  data/<name>.json            one file per lesson: all content (see docs/lesson-page-instructions.md §5)
-  build.py                    validate JSON + render -> lesson/output/<Name>-Ders.html
-  tools/check.js              headless QA: console errors, overflow, screenshots
-  tools/extract_legacy.py     import an old long-scroll lesson HTML into the JSON shape
-  source/                     the teacher's original hand-made HTML (input for the first lesson)
-  output/                     built lesson pages (deliverables)
-video/
-  src/scene.html              the promo video composition (15 scenes, CSS animation)
-  build.py                    -> video/build/full.html (75 s) + short.html (30 s cut)
-  render.js                   frame-accurate capture -> MP4
-  stills.js                   preview single frames
-  output/                     delivered MP4s + cover image
-docs/
-  lesson-page-instructions.md the brief for generating new lesson pages (pedagogy, data, design, accuracy)
-  video-pipeline.md           how the video system works and how to make a new one
-  reel-voiceover-cues.md      voice-over timing sheet for the 75 s Reel
-CLAUDE.md                     working agreement for agents picking up this repo
+skills/arabic-lesson-page/
+  SKILL.md                 instructions the agent follows
+  assets/template.html     the lesson page (design, animation, interactivity)
+  scripts/scaffold.py      request.md or <mark>ed HTML -> JSON skeleton with TODOs
+  scripts/build.py         validate JSON + render the page (refuses while TODOs remain)
+  scripts/check.js         headless QA: console errors, overflow, screenshots
+  scripts/extract_legacy.py  import an old long-scroll lesson into JSON
+  templates/lesson-request.md  the form the teacher fills in
+  examples/                two complete lessons (Derviş «في القدس», Şabbi «إرادة الحياة»)
+  references/lesson-design.md  pedagogy, data model and design rationale
+  tests/                   trial request + results of model trials
+.claude-plugin/            Claude Code plugin + marketplace manifests
+AGENTS.md                  guide for agents developing this skill
 ```
 
-## Requirements
-
-- Python 3.9+. `build.py` uses only the standard library; `extract_legacy.py` needs `beautifulsoup4`.
-- Node 18+ with `playwright` and a Chromium for it, used by `check.js`, `render.js` and `stills.js`.
-- `ffmpeg` with libx264.
-- Network access to `fonts.googleapis.com` (Amiri, Alegreya, Alegreya Sans).
-
-On a fresh machine:
-
-```bash
-npm install
-```
-
-```bash
-npx playwright install chromium
-```
-
-```bash
-pip install -r requirements.txt
-```
-
-(In Claude Code cloud sessions, Playwright and Chromium are preinstalled: skip `playwright install`.)
-
-## Quick start
-
-```bash
-python3 lesson/build.py lesson/data/kudus-mahmud-dervis.json lesson/output/Kudus-Mahmud-Dervis-Ders.html
-```
-
-```bash
-node lesson/tools/check.js lesson/output/Kudus-Mahmud-Dervis-Ders.html qa/
-```
-
-```bash
-python3 video/build.py
-```
-
-```bash
-node video/render.js video/build/short.html video/output/Arapca-Atolye-30sn.mp4 30
-```
-
-Open any `lesson/output/*.html` directly in a browser. It needs no server.
-
-## Lesson page in brief
-
-Three views:
-- **Şiir/Metin:** the full text, with the target words clickable and line-by-line reading mode.
-- **Kelimeler:** one slide per word. A dark stage on the left shows the word, its transliteration and a looping motion graphic. Step tabs on the right go Şiirde → Kök (animated root letters, mazi/muzari/masdar with root letters in gold) → Anlam → Harf-i cer → Örnekler (level filter) → Ayetler → Konuşalım (60-second timer).
-- **Pratik:** a fill-in-the-blank quiz and flip cards.
-
-Turkish translations are blurred until tapped, or `T` reveals them all. Keys: `←`/`→` words, Space next step, `F` fullscreen. Light and dark themes are supported, and the page works on phones.
-
-The first lesson: **«في القدس»** by Mahmud Derviş, with 15 words and one conditional sentence.
+The Kudüs lesson page, its source draft and the promo-video pipeline (Instagram Reel/Story renderer) are on the [`archive/kudus-lesson-and-reel`](https://github.com/macelik/savtuferda/tree/archive/kudus-lesson-and-reel) branch.

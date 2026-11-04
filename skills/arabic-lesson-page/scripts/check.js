@@ -1,6 +1,13 @@
-// QA for a built lesson page: node lesson/tools/check.js lesson/output/X.html [outDir]
+// QA for a built lesson page: node <skill>/scripts/check.js lessons/<slug>/X.html [outDir]
 // Reports console errors + horizontal overflow, saves screenshots of key views.
-const {chromium}=require('playwright');const path=require('path');const fs=require('fs');
+const path=require('path');const fs=require('fs');
+// Resolve Playwright from the skill folder, then from the user's working directory.
+function loadPlaywright(){
+  try{return require('playwright')}catch(e){}
+  try{return require(require('module').createRequire(path.join(process.cwd(),'noop.js')).resolve('playwright'))}catch(e){}
+  console.error('Playwright not found. In your working directory run:\n  npm i -D playwright\n  npx playwright install chromium');process.exit(2);
+}
+const {chromium}=loadPlaywright();
 (async()=>{const file=path.resolve(process.argv[2]);const out=process.argv[3]||'qa';fs.mkdirSync(out,{recursive:true});
 const b=await chromium.launch();const errs=[];
 const shots=[['text','#siir',1300,'light',null],['word1','#kelime-1',1300,'light',null],['root-dark','#kelime-1',1300,'dark','2'],['practice','#pratik',1300,'light',null],['phone-examples','#kelime-1',390,'light','5']];

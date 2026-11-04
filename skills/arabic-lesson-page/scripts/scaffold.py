@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turn a lesson request into a JSON skeleton for lesson/build.py.
+"""Turn a lesson request into a JSON skeleton for build.py (same folder).
 
 Usage:
     python3 scaffold.py <request.md | draft.html> <out.json>
@@ -12,7 +12,7 @@ Input B: a teacher's HTML draft in which target words are wrapped in <mark>
 
 The skeleton has every mechanical field filled (text units, rows, verse with exactly
 one <mark>, card order) and every content field set to a "TODO: ..." string.
-lesson/build.py refuses to build while any "TODO" remains.
+build.py refuses to build while any "TODO" remains.
 """
 import json, re, sys, pathlib
 

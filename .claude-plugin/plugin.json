@@ -1,0 +1,17 @@
+{
+  "name": "savtuferda",
+  "version": "1.0.0",
+  "description": "Skills for @savtuferda Arabic workshops. arabic-lesson-page turns an Arabic text with marked target words into a single interactive HTML lesson for Turkish-speaking learners (A2–B2).",
+  "author": {
+    "name": "macelik"
+  },
+  "repository": "https://github.com/macelik/savtuferda",
+  "keywords": [
+    "arabic",
+    "language-teaching",
+    "turkish",
+    "lesson",
+    "html",
+    "skill"
+  ]
+}

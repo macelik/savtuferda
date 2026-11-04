@@ -1,5 +1,5 @@
 node_modules/
-video/build/
+lessons/
 qa/
 __pycache__/
 .DS_Store
