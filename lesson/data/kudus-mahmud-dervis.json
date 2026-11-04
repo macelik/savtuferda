@@ -249,7 +249,10 @@
    ],
    "ayat": [],
    "gist": "kastetmek",
-   "mg": "point"
+   "mg": "point",
+   "mgText": {
+    "cap": "tam olarak bunu"
+   }
   },
   {
    "id": "w2",
@@ -490,7 +493,10 @@
    ],
    "ayat": [],
    "gist": "yükselmek",
-   "mg": "rise"
+   "mg": "rise",
+   "mgText": {
+    "cap": "göğe doğru"
+   }
   },
   {
    "id": "w4",
@@ -597,7 +603,11 @@
    ],
    "ayat": [],
    "gist": "hayal kırıklığı",
-   "mg": "deflate"
+   "mg": "deflate",
+   "mgText": {
+    "a": "umut",
+    "b": "kırıklık"
+   }
   },
   {
    "id": "w5",
@@ -944,7 +954,11 @@
    ],
    "ayat": [],
    "gist": "ihtilaf etmek",
-   "mg": "diverge"
+   "mg": "diverge",
+   "mgText": {
+    "a": "rivayet A",
+    "b": "rivayet B"
+   }
   },
   {
    "id": "w8",
@@ -1059,7 +1073,10 @@
    ],
    "ayat": [],
    "gist": "kıt, cimri",
-   "mg": "dim"
+   "mg": "dim",
+   "mgText": {
+    "cap": "ışığı kıt bir taş"
+   }
   },
   {
    "id": "w9",
@@ -1519,7 +1536,10 @@
    ],
    "ayat": [],
    "gist": "bitmek, yeşermek",
-   "mg": "grow"
+   "mg": "grow",
+   "mgText": {
+    "cap": "kelimeler ot gibi biter"
+   }
   },
   {
    "id": "shart",
@@ -1606,7 +1626,14 @@
    "gist": "inanmak → güvende olmak",
    "mg": "shart",
    "short": "إن لم…",
-   "flashFront": "تُؤْمِنُوا / تَأْمَنُوا"
+   "flashFront": "تُؤْمِنُوا / تَأْمَنُوا",
+   "mgText": {
+    "a": "إيمان",
+    "b": "أمن",
+    "aTr": "içte inanç",
+    "bTr": "dışta güven",
+    "mid": "أ م ن"
+   }
   },
   {
    "id": "w14",
@@ -1732,7 +1759,10 @@
    ],
    "ayat": [],
    "gist": "süzülmek, uçmak",
-   "mg": "birds"
+   "mg": "birds",
+   "mgText": {
+    "cap": "iki el · iki güvercin"
+   }
   },
   {
    "id": "w15",
@@ -1858,7 +1888,10 @@
    ],
    "ayat": [],
    "gist": "bağırmak",
-   "mg": "shout"
+   "mg": "shout",
+   "mgText": {
+    "cap": "birden, yüksek sesle"
+   }
   }
  ]
 }

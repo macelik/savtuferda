@@ -83,6 +83,7 @@ def card_for(unit, mark_text, idx_in_unit):
         "levels": ["A2", "B1"],
         "gist": "TODO: 1-3 Turkish words",
         "mg": "TODO: motion graphic key",
+        "mgText": {},
         "verse": verse,
         "verseTr": "TODO: Turkish translation of this unit, in “quotes”",
         "sarf": [["TODO: mazi", "TODO: muzari", "TODO: masdar"]],

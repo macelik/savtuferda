@@ -3,7 +3,7 @@
 import json, sys, html, pathlib, re
 
 MG_KEYS = {'point','aim','rise','deflate','slope','thought','diverge','dim','flame','eye',
-           'radiate','grow','shart','birds','shout'}  # keep in sync with MG in src/template.html
+           'radiate','grow','shart','birds','shout','break','embrace','vanish'}  # keep in sync with MG in src/template.html
 REQUIRED_CARD = ['word','translit','levels','verse','verseTr','sarf','sarfNote','def','defTr',
                  'syn','meanings','extras','qs','gist','mg']
 
@@ -29,7 +29,7 @@ def main(src, dst):
     here = pathlib.Path(__file__).parent
     d = json.load(open(src, encoding='utf-8'))
     m, cards = d['meta'], d['cards']
-    errs = []
+    errs, warns = [], []
     poem_marks = {bare(x) for u in d['poem'] for x in re.findall(r'<mark>(.*?)</mark>', u)}
     if len(d['poem']) != len(d['rows']):
         errs.append(f"poem has {len(d['poem'])} units but rows has {len(d['rows'])}")
@@ -45,9 +45,12 @@ def main(src, dst):
         for row in c.get('sarf', []):
             if len(row) != 3: errs.append(f'card {i}: each sarf row needs [mazi, muzari, masdar]')
         if not ROOT.search(c.get('sarfNote', '')): errs.append(f'card {i}: sarfNote must contain "<b>Kök:</b> x-y-z" (or <b>x-y-z</b>)')
+        if not set(c.get('levels', [])) <= {'A2', 'B1', 'B2'} or not c.get('levels'):
+            errs.append(f'card {i}: levels must be a non-empty subset of A2, B1, B2')
     todo = sorted({p for p, _ in find_todo(d)})
     if todo:
         errs.append('unfilled TODO at: ' + ', '.join(todo[:25]) + (' …' if len(todo) > 25 else ''))
+    for w in warns: print('warning:', w)
     if errs:
         sys.exit('Data errors:\n  ' + '\n  '.join(errs))
     t = (here / 'src' / 'template.html').read_text(encoding='utf-8')

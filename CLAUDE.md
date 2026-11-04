@@ -16,7 +16,7 @@ The client is an Arabic teacher (Instagram: **@savtuferda**). She runs cartoon a
 
 | Task | Read | Run |
 |---|---|---|
-| New lesson page | `docs/lesson-page-instructions.md` (the full brief) | `python3 lesson/build.py lesson/data/<x>.json lesson/output/<X>-Ders.html`, then `node lesson/tools/check.js <out.html> qa/` |
+| New lesson page | the `arabic-lesson-page` skill (`.claude/skills/arabic-lesson-page/SKILL.md`); background in `docs/lesson-page-instructions.md` | `python3 lesson/build.py lesson/data/<x>.json lesson/output/<X>-Ders.html`, then `node lesson/tools/check.js <out.html> qa/` |
 | New / changed promo video | `docs/video-pipeline.md` | `python3 video/build.py`, `node video/stills.js …`, `node video/render.js …` |
 | Voice-over timing for a video | `docs/reel-voiceover-cues.md` (example) | — |
 
