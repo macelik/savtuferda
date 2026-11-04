@@ -1,0 +1,12 @@
+{
+  "name": "savtuferda",
+  "owner": { "name": "macelik" },
+  "metadata": { "description": "Skills for @savtuferda Arabic workshops" },
+  "plugins": [
+    {
+      "name": "savtuferda",
+      "source": "./",
+      "description": "arabic-lesson-page: Arabic text + marked words -> interactive HTML lesson (Turkish UI)."
+    }
+  ]
+}

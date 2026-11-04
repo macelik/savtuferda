@@ -5,19 +5,23 @@ description: Build an interactive Arabic lesson page (single HTML, Turkish UI) f
 
 # Arabic lesson page
 
-The teacher sends an Arabic text (a poem, prose, a cartoon dialogue or a song) and marks the words she wants to teach. You produce `lesson/output/<Konu>-<Yazar>-Ders.html`, a single self-contained page she presents in class to **Turkish-speaking A2–B2 learners**.
+The teacher sends an Arabic text (a poem, prose, a cartoon dialogue or a song) and marks the words she wants to teach. You produce `lessons/<slug>/<Konu>-<Yazar>-Ders.html` in the user's working directory, a single self-contained page she presents in class to **Turkish-speaking A2–B2 learners**.
 
-**Your job is the content.** The design, layout, animation and interactivity already exist in `lesson/src/template.html`. Never edit the template or write HTML by hand. You fill in one JSON file, and `lesson/build.py` turns it into the page.
+**Your job is the content.** The design, layout, animation and interactivity already exist in `assets/template.html` inside this skill. Never edit the template or write HTML by hand. You fill in one JSON file, and `scripts/build.py` turns it into the page.
 
-The worked example to imitate is `lesson/data/kudus-mahmud-dervis.json` and its built page `lesson/output/Kudus-Mahmud-Dervis-Ders.html`. Open the JSON and read at least cards 1, 8 and 13 before you write anything.
+The worked example to imitate is `examples/kudus-mahmud-dervis.json` (a second one is `examples/irade-el-hayat.json`). Open it and read at least cards 1, 8 and 13 before you write anything. For background on the pedagogy and design, see `references/lesson-design.md`; you don't need it for routine lessons.
+
+**Paths.** Below, `$SKILL_DIR` means the folder that contains this `SKILL.md`, wherever your harness installed it: for example `.claude/skills/arabic-lesson-page`, `~/.claude/skills/arabic-lesson-page`, `.agents/skills/arabic-lesson-page` or `~/.config/opencode/skills/arabic-lesson-page`. Find it once and use the absolute path in commands. Lesson files go in the **user's working directory**, under `lessons/<slug>/`.
+
+**Requirements:** `python3` (3.9+, standard library only). For QA: Node 18+ with `playwright` and its Chromium. If `node $SKILL_DIR/scripts/check.js` says Playwright is missing, install it in the working directory with `npm i -D playwright` and then `npx playwright install chromium`, unless the environment already provides a browser. The page loads its fonts from Google Fonts.
 
 ## Workflow
 
-Run all commands from the repo root.
+Run all commands from the user's working directory.
 
 1. **Scaffold.** Pick a short ASCII slug (e.g. `irade-el-hayat`):
    ```bash
-   python3 .claude/skills/arabic-lesson-page/scripts/scaffold.py <request.md|draft.html> lesson/data/<slug>.json
+   python3 $SKILL_DIR/scripts/scaffold.py <request.md|draft.html> lessons/<slug>/<slug>.json
    ```
    This fills every mechanical field: the text units, the translation rows, one card per marked word, and each card's `verse` with exactly one `<mark>`. Every content field it can't fill is set to `"TODO: …"`.
 2. **Verify the source.** Who wrote the text, and where is it from? Check the requested `author`/`source` against what you know. If they're wrong or you're unsure, say so in `meta.notes` **and** in your final report. Never invent an attribution.
@@ -25,14 +29,16 @@ Run all commands from the repo root.
 4. **Self-review**: go through the checklist at the end of this file and fix what fails.
 5. **Build:**
    ```bash
-   python3 lesson/build.py lesson/data/<slug>.json lesson/output/<Name>-Ders.html
+   python3 $SKILL_DIR/scripts/build.py lessons/<slug>/<slug>.json lessons/<slug>/<Name>-Ders.html
    ```
    The build refuses to run if any TODO is left, a word has no harakat, `sarfNote` lacks the root, an `mg` key is unknown, or a verse's `<mark>` differs from the text's. Fix what it reports and rebuild.
 6. **QA:**
    ```bash
-   node lesson/tools/check.js lesson/output/<Name>-Ders.html qa/<slug>
+   node $SKILL_DIR/scripts/check.js lessons/<slug>/<Name>-Ders.html lessons/<slug>/qa
    ```
-   It must print `OK`. Then **open and look at every screenshot** with the Read tool. In the `root-dark.png` screenshot, the gold letters inside the three forms must be exactly the root letters.
+   It must print `OK`. Then **open and look at every screenshot** with the Read tool:
+   - In the `root-dark.png` screenshot, the gold letters inside the three forms must be exactly the root letters.
+   - In `anim/`, look at both moments (`-a`, `-b`) and the rest state (`-rest`) of every **custom** animation, and of any built-in one you're unsure about. The two moments must differ visibly, nothing may be cut off, and `-rest` must show only the meaningful end state.
 7. **Report** (format at the end of this file).
 
 ## Card fields
@@ -113,7 +119,13 @@ When a mark is a whole structure (a conditional, an idiom, a word pair) or the r
 
 ## Motion graphics (`mg`) and their captions (`mgText`)
 
-Pick the scene that shows **the sense used in this text**. Ask: "If a student only saw this animation, would they guess the word?" If no key passes that test, use the closest one and say so in the report.
+Pick the scene that shows **the sense used in this text**. Ask: "If a student only saw this animation, would they guess the word?"
+
+Make a **custom animation** (`"mg": "custom"`) when:
+- no key below passes that test, or
+- the user describes the picture they want ("a door opens and light comes out").
+
+Custom animations are small SVG drawings animated with CSS, written straight into the card. **Read `references/motion-graphics.md` before making one.** It has the drawing kit, the motion kit, the step-by-step method and a tested example.
 
 | key | scene | use for | caption slots |
 |---|---|---|---|
@@ -167,7 +179,7 @@ If two consecutive cards would get the same key, choose a different fitting key 
 ## Final report (reply to the user)
 
 ```
-Built: lesson/output/<Name>-Ders.html  (<n> cards)  ·  QA: OK
+Built: lessons/<slug>/<Name>-Ders.html  (<n> cards)  ·  QA: OK
 Source check: <author/source confirmed | corrected from X to Y | could not verify>
 Corrections / doubts about the teacher's input: <list or "none">
 Citations used: <list of ayat/hadith with references, or "none">

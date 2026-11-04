@@ -15,7 +15,8 @@
   "notes": [
    "Şiir, Ebu'l-Kasım eş-Şabbi'nin (1909–1934) <span lang=\"ar\" dir=\"rtl\">«أغاني الحياة»</span> divanındaki <span lang=\"ar\" dir=\"rtl\">«إرادة الحياة»</span> adlı şiiridir; yazar ve divan adı bilinen atıftır, baskı ve sayfa bilgisi bu sayfa hazırlanırken çevrimdışı doğrulanamadı.",
    "Tanımlar A2–B1 seviyesine sadeleştirilmiştir; örnek cümleler özgün olarak hazırlanmıştır."
-  ]
+  ],
+  "css": "@keyframes c-sun-rise{0%,25%{transform:translateY(30px)}50%,80%{transform:translateY(-30px)}95%,100%{transform:translateY(30px)}}@keyframes c-sky-fade{0%,25%{opacity:1}50%,80%{opacity:0}95%,100%{opacity:1}}@keyframes c-slap-hand{0%,10%{transform:translateX(40px) rotate(12deg)}70%,88%{transform:translateX(0) rotate(0)}100%{transform:translateX(40px) rotate(12deg)}}@keyframes c-slap-burst{0%,66%{opacity:0;transform:scale(.4)}72%{opacity:1;transform:scale(1)}86%{opacity:1;transform:scale(1.25)}100%{opacity:0;transform:scale(1.25)}}@keyframes c-slap-cheek{0%,68%{transform:translateX(0)}72%{transform:translateX(-5px)}78%{transform:translateX(4px)}84%,100%{transform:translateX(0)}}"
  },
  "request": {
   "author": "Ebu'l-Kasım eş-Şabbi",
@@ -379,8 +380,10 @@
     "B1"
    ],
    "gist": "aydınlanmak, dağılmak",
-   "mg": "radiate",
-   "mgText": {},
+   "mg": "custom",
+   "mgText": {
+    "cap": "güneş doğar, yıldızlar söner"
+   },
    "verse": "وَلَا بُدَّ لِلَّيْلِ أَنْ <mark>يَنْجَلِي</mark>",
    "verseTr": "“gecenin de mutlaka dağılıp aydınlanması gerekir,”",
    "sarf": [
@@ -460,7 +463,8 @@
      "lvl": "B1",
      "ar": "هَلْ حَدَثَ أَنِ انْجَلَتْ مُشْكِلَةٌ بَعْدَ انْتِظَارٍ طَوِيلٍ؟ حَدِّثْنَا عَنْهَا."
     }
-   ]
+   ],
+   "mgSvg": "<g style=\"opacity:0;animation:c-sky-fade 3.6s ease-in-out infinite\"><circle cx=\"162\" cy=\"38\" r=\"2.6\" class=\"f\"/><circle cx=\"198\" cy=\"62\" r=\"2.6\" class=\"f\"/><circle cx=\"46\" cy=\"112\" r=\"2.6\" class=\"f\"/><circle cx=\"196\" cy=\"108\" r=\"2.6\" class=\"f\"/><circle cx=\"78\" cy=\"58\" r=\"20\" class=\"f\"/><circle cx=\"90\" cy=\"50\" r=\"17\" style=\"fill:var(--stage)\"/></g><circle cx=\"120\" cy=\"150\" r=\"24\" class=\"f\" style=\"transform:translateY(-30px);animation:c-sun-rise 3.6s ease-in-out infinite\"/><rect x=\"0\" y=\"150\" width=\"240\" height=\"30\" style=\"fill:var(--stage)\"/><path d=\"M20 150 H220\" class=\"s\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" class=\"lbl\">{{cap}}</text>"
   },
   {
    "word": "يَنْكَسِرْ",
@@ -837,10 +841,9 @@
     "B1"
    ],
    "gist": "tokat, sert darbe",
-   "mg": "deflate",
+   "mg": "custom",
    "mgText": {
-    "a": "yükseliş",
-    "b": "tokat"
+    "cap": "el tokat atar"
    },
    "verse": "مِنْ <mark>صَفْعَةِ</mark> العَدَمِ المُنْتَصِرْ",
    "verseTr": "“galip gelen yokluğun tokadından.”",
@@ -921,7 +924,8 @@
      "lvl": "B1",
      "ar": "هَلْ تَرَى أَنَّ الفَشَلَ صَفْعَةٌ أَمْ دَرْسٌ؟ لِمَاذَا؟"
     }
-   ]
+   ],
+   "mgSvg": "<path d=\"M20 150 H220\" class=\"s soft\"/><circle cx=\"78\" cy=\"92\" r=\"34\" class=\"s\" style=\"animation:c-slap-cheek 2.4s ease-in-out infinite\"/><g style=\"transform-box:view-box;transform-origin:200px 95px;animation:c-slap-hand 2.4s linear infinite\"><path d=\"M112 70 H150 M112 84 H150 M112 98 H150 M112 112 H150 M140 118 L124 128\" class=\"s\" style=\"stroke-width:9\"/><rect x=\"146\" y=\"64\" width=\"44\" height=\"62\" rx=\"16\" class=\"f\"/></g><g style=\"transform-box:view-box;transform-origin:112px 92px;animation:c-slap-burst 2.4s ease-out infinite\"><path d=\"M106 92 L90 92 M107 89 L95 82 M107 95 L95 102 M109 87 L103 76 M109 97 L103 108\" class=\"s\" style=\"stroke-width:3.5\"/></g><text x=\"120\" y=\"172\" text-anchor=\"middle\" class=\"lbl\">{{cap}}</text>"
   }
  ]
 }

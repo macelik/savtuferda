@@ -1,9 +1,9 @@
 {
   "name": "savtuferda",
   "private": true,
-  "description": "Lesson-page QA and promo-video rendering for @savtuferda",
+  "description": "arabic-lesson-page skill QA and promo-video rendering for @savtuferda",
   "scripts": {
-    "lesson:check": "node lesson/tools/check.js",
+    "lesson:check": "node skills/arabic-lesson-page/scripts/check.js",
     "video:build": "python3 video/build.py",
     "video:full": "python3 video/build.py && node video/render.js video/build/full.html video/output/Arapca-Atolye-Reel.mp4 75",
     "video:short": "python3 video/build.py && node video/render.js video/build/short.html video/output/Arapca-Atolye-30sn.mp4 30"

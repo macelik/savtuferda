@@ -2,7 +2,7 @@
 
 You are building a **single, self-contained HTML lesson page** that an Arabic teacher presents in class to **Turkish-speaking learners (A2–B2)**. The teacher gives you an Arabic text and a list of target words or phrases. You produce one `.html` file that she projects in class and students can also open on their phones.
 
-The reference implementation is `lesson/output/Kudus-Mahmud-Dervis-Ders.html` (Mahmud Derviş, «في القدس»), built from `lesson/data/kudus-mahmud-dervis.json` with `lesson/src/template.html`. **For a new lesson, write a new JSON data file and run `lesson/build.py`. Don't redesign or copy the HTML by hand.** Change the template only to add a capability that every lesson gains (new motion graphic, new source type). This document says what to keep, what to change and why.
+The reference implementation is `examples/kudus-mahmud-dervis.json` (Mahmud Derviş, «في القدس»), built with `assets/template.html` (paths are relative to this skill's folder). **For a new lesson, write a new JSON data file and run `scripts/build.py`. Don't redesign or copy the HTML by hand.** Change the template only to add a capability that every lesson gains (new motion graphic, new source type). This document says what to keep, what to change and why.
 
 ---
 
@@ -89,7 +89,7 @@ Footer: sources (dictionaries, Quran references), plus a note about the source t
 
 ## 5. Data model
 
-All content lives in one JSON file in `lesson/data/`. `lesson/build.py` validates it and injects it into the template. The Kudüs file is the full worked example; copy its shape.
+All content lives in one JSON file (`lessons/<slug>/<slug>.json` in the user's project). `scripts/build.py` validates it and injects it into the template. The Kudüs file is the full worked example; copy its shape.
 
 ```json
 {
@@ -138,43 +138,17 @@ Notes:
 - `poem`/`rows` are named for the first project, but they hold any text units: lines, sentences or dialogue turns. For a dialogue, start each unit with `<b>Speaker:</b>`.
 - The steps a card shows are built from what it has: Şiirde → Kök → Anlam → (Harf-i cer) → (Örnekler) → (Ayetler) → Konuşalım.
 - Turkish glosses in parentheses inside Arabic meaning lines are isolated automatically.
-- `lesson/tools/extract_legacy.py` imports an old long-scroll lesson HTML into this shape (then add `meta`, `gist`, `mg`).
+- `scripts/extract_legacy.py` imports an old long-scroll lesson HTML into this shape (then add `meta`, `gist`, `mg`).
 
 ## 6. Motion graphics (one per word)
 
-The motion graphic is the most memorable part of each slide. Rules:
+The motion graphic is the most memorable part of each slide. It must **show the meaning** of the word as used in the text; it isn't decoration. Each one is a small inline SVG (viewBox 240×180), drawn in the stage's gold (`currentColor`) and animated with CSS keyframes. Loops last 2–4 s and hold the meaningful state long enough to see. Everything stops under `prefers-reduced-motion`.
 
-- Inline SVG, `viewBox="0 0 240 180"`, drawn with `currentColor` (gold on the dark stage) and two or three classes: `.s` stroke, `.f` fill, `.soft` faded. Keep it simple: under ~10 shapes, and **no long hand-drawn path data**.
-- It must **show the meaning**, not decorate. Pick a concrete scene from the word's sense, ideally the sense used in the text.
-- Use CSS keyframes that loop every 2–4 s. Useful primitives: draw a line (`stroke-dashoffset`), scale up from the base (`transform-origin:50% 100%`), move along a path (`offset-path`), rotate, pulse, expanding rings.
-- An optional tiny Turkish caption inside the SVG (`.lbl`, e.g. "göğe doğru"). Arabic inside the SVG only as a separate `<text>`; never mix Arabic and Latin in one `<text>` (the bidi order breaks).
-- Wrap everything in `@media (prefers-reduced-motion: reduce)` → no animation.
+- Built-in animations are picked with `"mg": "<key>"`; the list of keys is in `SKILL.md`.
+- Captions come from `mgText`.
+- A lesson can define its own animation with `"mg": "custom"` (`mgSvg` + `meta.css`). Use this when the user describes a picture or no key fits.
 
-Ready-made idea library (reuse and extend it):
-
-| Meaning type | Scene |
-|---|---|
-| rise, ascend | dots floating up toward a glowing circle |
-| descend, slope | a ball rolling down an incline |
-| aim, direct, guide | an arrow rotating to align, then flying at a target |
-| mean, specify | a magnifier scanning three boxes and stopping on one |
-| disappointment, failure | a curve that rises, then falls ("umut → kırıklık") |
-| think, worry, whisper to oneself | a head outline with thought bubbles popping in turn |
-| differ, disagree | two paths branching from one point |
-| scarce, dim, little | a stone with a weakly flickering light |
-| break out, erupt (war, fire) | flames growing with sparks rising |
-| stare, gaze | an eye that blinks, then opens wide |
-| appear, manifest, light | rays rotating with a pulsing centre and an expanding ring |
-| grow, sprout | grass blades growing from the ground, staggered |
-| fly, hover, circle | two birds orbiting with flapping wings |
-| shout, cry out | a speaker cone with expanding sound arcs |
-| condition → result | two circles with a pulse travelling from cause to effect |
-| break, shatter (`break`) | a chain snaps in the middle |
-| embrace, hold (`embrace`) | two arms close around a glowing centre |
-| evaporate, vanish (`vanish`) | wisps of steam rise from a dish and fade |
-| eat, drink, run, open, close, give, take… | invent an equally simple scene in the same visual language |
-
-Captions inside an animation come from the card's `mgText`; each key has a generic default. Never hard-code a lesson's own words into the `MG` strings in the template: that leaks one lesson's captions into every other lesson (this happened with the first version of `shart`). The full key list with caption slots is in `.claude/skills/arabic-lesson-page/SKILL.md`.
+**How to build them**, from technology choice (SVG/CSS first; JavaScript, canvas or three.js only as a skill change) to the drawing and motion kits, the description-to-animation method and a tested example, is in [`motion-graphics.md`](motion-graphics.md).
 
 ## 7. Root highlighting algorithm
 
@@ -226,15 +200,15 @@ Keep the established identity so the teacher's series looks consistent:
 
 1. Read the text and split it into units; write or check the Turkish translation per unit.
 2. For each target word, research and draft the card (§5), then run the accuracy checks (§8).
-3. Pick an `mg` per word (§6). If none fits, add a new entry to the `MG` object in `lesson/src/template.html` (and to `MG_KEYS` in `lesson/build.py`).
+3. Pick an `mg` per word (§6). If none fits, add a new entry to the `MG` object in `assets/template.html` (and to `MG_KEYS` in `scripts/build.py`). This changes the skill itself, so it belongs in a pull request to the skill's repository, not in a lesson.
 4. Build:
    ```bash
-   python3 lesson/build.py lesson/data/<name>.json lesson/output/<Name>-Ders.html
+   python3 $SKILL_DIR/scripts/build.py lessons/<slug>/<slug>.json lessons/<slug>/<Name>-Ders.html
    ```
    It refuses to build with missing fields, unknown `mg` keys, or a verse without `<mark>`.
 5. QA:
    ```bash
-   node lesson/tools/check.js lesson/output/<Name>-Ders.html qa/
+   node $SKILL_DIR/scripts/check.js lessons/<slug>/<Name>-Ders.html lessons/<slug>/qa
    ```
    It reports console errors and horizontal overflow, and saves screenshots: the text view, word 1, the Kök step in dark mode, Pratik, and the Örnekler step at 390px. Look at the screenshots. Also check by eye that:
    - the root highlighting is correct on every card;

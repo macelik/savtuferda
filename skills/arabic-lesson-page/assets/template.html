@@ -401,7 +401,7 @@ const MG={
 point:`<rect x="30" y="72" width="50" height="22" rx="8" class="s soft"/><rect x="95" y="72" width="50" height="22" rx="8" class="s" style="animation:mgPick 3.2s infinite"/><rect x="160" y="72" width="50" height="22" rx="8" class="s soft"/>
 <g style="animation:mgScan 3.2s ease-in-out infinite"><circle cx="120" cy="83" r="26" class="s"/><path d="M139 102 L156 122" class="s" stroke-width="5"/></g><text x="120" y="152" text-anchor="middle" class="lbl">{{cap}}</text>`,
 aim:`<g style="transform-origin:center"><circle cx="190" cy="90" r="38" class="s soft"/><circle cx="190" cy="90" r="24" class="s soft"/><circle cx="190" cy="90" r="9" class="f" style="animation:mgHit 2.8s infinite"/></g>
-<g style="animation:mgAim 2.8s cubic-bezier(.5,0,.3,1) infinite;transform-origin:0% 50%"><path d="M30 90 H88" class="s" stroke-width="4"/><path d="M78 80 L92 90 L78 100" class="s" stroke-width="4"/><path d="M30 90 l-8 -8 M30 90 l-8 8" class="s"/></g>`,
+<g style="transform:translateX(98px);animation:mgAim 2.8s cubic-bezier(.5,0,.3,1) infinite;transform-origin:0% 50%"><path d="M30 90 H88" class="s" stroke-width="4"/><path d="M78 80 L92 90 L78 100" class="s" stroke-width="4"/><path d="M30 90 l-8 -8 M30 90 l-8 8" class="s"/></g>`,
 rise:`<circle cx="120" cy="30" r="16" class="f" style="opacity:.35;animation:mgPulse 2.4s infinite;transform-origin:center"/><circle cx="120" cy="30" r="8" class="f"/>
 <path d="M120 160 V45" class="s soft" stroke-dasharray="3 8"/>
 ${[0,1,2].map(i=>`<circle cx="${100+i*20}" cy="150" r="5" class="f" style="animation:mgFloat 2.7s ${i*.8}s ease-in infinite"/>`).join('')}
@@ -409,7 +409,7 @@ ${[0,1,2].map(i=>`<circle cx="${100+i*20}" cy="150" r="5" class="f" style="anima
 deflate:`<path d="M20 150 H220" class="s soft"/><path d="M30 145 C70 140 90 40 125 40 S170 140 215 148" class="s" style="--len:300;stroke-dasharray:300;animation:mgDraw 3.4s ease-in-out infinite"/>
 <text x="125" y="28" text-anchor="middle" class="lbl">{{a}}</text><text x="205" y="172" text-anchor="middle" class="lbl">{{b}}</text>`,
 slope:`<path d="M15 45 L225 150" class="s" stroke-width="4"/><path d="M15 150 H225" class="s soft"/><path d="M15 45 V150" class="s soft"/>
-<circle r="11" class="f" style="offset-path:path('M28 25 L222 122');offset-rotate:0deg;animation:mgTravel 2.6s cubic-bezier(.55,0,.9,.5) infinite"/>`,
+<circle r="11" class="f" style="offset-path:path('M28 25 L222 122');offset-rotate:0deg;offset-distance:100%;animation:mgTravel 2.6s cubic-bezier(.55,0,.9,.5) infinite"/>`,
 thought:`<path d="M60 160 C40 160 35 130 40 115 C30 110 35 98 42 96 C40 70 58 52 82 52 C108 52 122 72 120 98 C118 118 105 128 100 160" class="s"/>
 <circle cx="130" cy="78" r="5" class="f" style="animation:mgBubble 3s infinite;transform-origin:center"/><circle cx="150" cy="58" r="8" class="f" style="animation:mgBubble 3s .3s infinite;transform-origin:center"/>
 <g style="animation:mgBubble 3s .6s infinite;transform-origin:center"><ellipse cx="190" cy="34" rx="34" ry="22" class="s"/><circle cx="178" cy="34" r="3" class="f"/><circle cx="190" cy="34" r="3" class="f"/><circle cx="202" cy="34" r="3" class="f"/></g>`,
@@ -435,18 +435,18 @@ shart:`<circle cx="60" cy="80" r="40" class="s"/><circle cx="180" cy="80" r="40"
 <text x="60" y="142" text-anchor="middle" class="lbl">{{aTr}}</text><text x="180" y="142" text-anchor="middle" class="lbl">{{bTr}}</text>
 <text x="120" y="172" text-anchor="middle">{{mid}}</text>`,
 birds:`<circle cx="120" cy="90" r="58" class="s soft" stroke-dasharray="2 7"/>
-${[0,180].map(r=>`<g style="transform-origin:120px 90px;transform-box:view-box;animation:mgSpin 6s linear infinite;animation-delay:${-r/60}s"><g transform="translate(120 32)"><path d="M-14 0 Q-7 -9 0 0 Q7 -9 14 0" class="s" style="transform-origin:center;animation:mgFlap .7s ease-in-out infinite"/></g></g>`).join('')}
+${[0,180].map(r=>`<g style="transform-origin:120px 90px;transform-box:view-box;transform:rotate(${r}deg);animation:mgSpin 6s linear infinite;animation-delay:${-r/60}s"><g transform="translate(120 32)"><path d="M-14 0 Q-7 -9 0 0 Q7 -9 14 0" class="s" style="transform-origin:center;animation:mgFlap .7s ease-in-out infinite"/></g></g>`).join('')}
 <text x="120" y="96" text-anchor="middle" class="lbl">{{cap}}</text>`,
 shout:`<path d="M40 70 L70 70 L100 45 L100 135 L70 110 L40 110 Z" class="s"/>
 ${[0,1,2].map(i=>`<path d="M120 50 Q150 90 120 130" class="s" style="transform-origin:0% 50%;animation:mgRing 1.8s ${i*.6}s ease-out infinite"/>`).join('')}
 <text x="120" y="170" text-anchor="middle" class="lbl">{{cap}}</text>`,
-break:`<g style="transform-box:view-box;transform-origin:114px 90px;animation:mgSnapL 3s ease-in-out infinite"><rect x="22" y="78" width="44" height="24" rx="12" class="s"/><rect x="58" y="78" width="44" height="24" rx="12" class="s"/><path d="M102 90 H114" class="s"/></g>
-<g style="transform-box:view-box;transform-origin:126px 90px;animation:mgSnapR 3s ease-in-out infinite"><path d="M126 90 H138" class="s"/><rect x="138" y="78" width="44" height="24" rx="12" class="s"/><rect x="174" y="78" width="44" height="24" rx="12" class="s"/></g>
+break:`<g style="transform-box:view-box;transform-origin:114px 90px;transform:translate(-8px,12px) rotate(-16deg);animation:mgSnapL 3s ease-in-out infinite"><rect x="22" y="78" width="44" height="24" rx="12" class="s"/><rect x="58" y="78" width="44" height="24" rx="12" class="s"/><path d="M102 90 H114" class="s"/></g>
+<g style="transform-box:view-box;transform-origin:126px 90px;transform:translate(8px,12px) rotate(16deg);animation:mgSnapR 3s ease-in-out infinite"><path d="M126 90 H138" class="s"/><rect x="138" y="78" width="44" height="24" rx="12" class="s"/><rect x="174" y="78" width="44" height="24" rx="12" class="s"/></g>
 ${[-28,-8,12,30].map((dx,i)=>`<circle cx="120" cy="92" r="2.5" class="f" style="--dx:${dx}px;animation:mgSpark 3s ${1.4+i*.05}s ease-out infinite"/>`).join('')}
 <text x="120" y="150" text-anchor="middle" class="lbl">{{cap}}</text>`,
 embrace:`<circle cx="120" cy="95" r="13" class="f" style="transform-origin:center;animation:mgPulse 2.4s infinite"/>
-<g style="transform-box:view-box;transform-origin:70px 95px;animation:mgHugL 3s ease-in-out infinite"><path d="M78 45 Q40 95 78 145" class="s" stroke-width="5"/></g>
-<g style="transform-box:view-box;transform-origin:170px 95px;animation:mgHugR 3s ease-in-out infinite"><path d="M162 45 Q200 95 162 145" class="s" stroke-width="5"/></g>
+<g style="transform-box:view-box;transform-origin:70px 95px;transform:translateX(16px);animation:mgHugL 3s ease-in-out infinite"><path d="M78 45 Q40 95 78 145" class="s" stroke-width="5"/></g>
+<g style="transform-box:view-box;transform-origin:170px 95px;transform:translateX(-16px);animation:mgHugR 3s ease-in-out infinite"><path d="M162 45 Q200 95 162 145" class="s" stroke-width="5"/></g>
 <text x="120" y="172" text-anchor="middle" class="lbl">{{cap}}</text>`,
 vanish:`<path d="M60 150 Q120 168 180 150" class="s" stroke-width="4"/>
 ${[100,120,140].map((x,i)=>`<path d="M${x} 140 q-10 -14 0 -28 q10 -14 0 -28" class="s" style="animation:mgFloat 2.7s ${i*.8}s ease-out infinite"/>`).join('')}
@@ -459,7 +459,10 @@ const MGT={point:{cap:'tam olarak bunu'},rise:{cap:'yukarı doğru'},deflate:{a:
   shout:{cap:'yüksek sesle'},break:{cap:'kırılır'},embrace:{cap:'kucaklar, sarar'},vanish:{cap:'buharlaşıp kaybolur'}};
 const escT=t=>String(t).replace(/[&<>]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
 const fitFs=w=>{const n=bare(w||'').length;return n>9?11:n>6?14:20};
-const mgSvg=i=>{const c=C[i],k=MG[c.mg]?c.mg:'radiate',t=Object.assign({},MGT[k]||{},c.mgText||{});t.aFs=fitFs(t.a);t.bFs=fitFs(t.b);
+/* "mg":"custom" -> the card brings its own SVG markup (mgSvg); per-lesson keyframes live in meta.css */
+if(D.meta&&D.meta.css){const st=document.createElement('style');st.textContent=D.meta.css;document.head.appendChild(st);}
+const mgSvg=i=>{const c=C[i],custom=c.mg==='custom'&&c.mgSvg,k=custom?'custom':(MG[c.mg]?c.mg:'radiate'),t=Object.assign({},MGT[k]||{},c.mgText||{});t.aFs=fitFs(t.a);t.bFs=fitFs(t.b);
+  if(custom)return `<svg class="mg" viewBox="0 0 240 180" role="img" aria-label="${GIST[i]}">${c.mgSvg.replace(/\{\{(\w+)\}\}/g,(_,n)=>escT(t[n]||''))}</svg>`;
   return `<svg class="mg" viewBox="0 0 240 180" role="img" aria-label="${GIST[i]}">${MG[k].replace(/\{\{(\w+)\}\}/g,(_,n)=>escT(t[n]||''))}</svg>`};
 
 /* ---------- root highlighting ---------- */
