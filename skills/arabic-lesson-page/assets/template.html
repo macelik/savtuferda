@@ -459,7 +459,10 @@ const MGT={point:{cap:'tam olarak bunu'},rise:{cap:'yukarı doğru'},deflate:{a:
   shout:{cap:'yüksek sesle'},break:{cap:'kırılır'},embrace:{cap:'kucaklar, sarar'},vanish:{cap:'buharlaşıp kaybolur'}};
 const escT=t=>String(t).replace(/[&<>]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
 const fitFs=w=>{const n=bare(w||'').length;return n>9?11:n>6?14:20};
-const mgSvg=i=>{const c=C[i],k=MG[c.mg]?c.mg:'radiate',t=Object.assign({},MGT[k]||{},c.mgText||{});t.aFs=fitFs(t.a);t.bFs=fitFs(t.b);
+/* "mg":"custom" -> the card brings its own SVG markup (mgSvg); per-lesson keyframes live in meta.css */
+if(D.meta&&D.meta.css){const st=document.createElement('style');st.textContent=D.meta.css;document.head.appendChild(st);}
+const mgSvg=i=>{const c=C[i],custom=c.mg==='custom'&&c.mgSvg,k=custom?'custom':(MG[c.mg]?c.mg:'radiate'),t=Object.assign({},MGT[k]||{},c.mgText||{});t.aFs=fitFs(t.a);t.bFs=fitFs(t.b);
+  if(custom)return `<svg class="mg" viewBox="0 0 240 180" role="img" aria-label="${GIST[i]}">${c.mgSvg.replace(/\{\{(\w+)\}\}/g,(_,n)=>escT(t[n]||''))}</svg>`;
   return `<svg class="mg" viewBox="0 0 240 180" role="img" aria-label="${GIST[i]}">${MG[k].replace(/\{\{(\w+)\}\}/g,(_,n)=>escT(t[n]||''))}</svg>`};
 
 /* ---------- root highlighting ---------- */

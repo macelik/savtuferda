@@ -142,39 +142,13 @@ Notes:
 
 ## 6. Motion graphics (one per word)
 
-The motion graphic is the most memorable part of each slide. Rules:
+The motion graphic is the most memorable part of each slide. It must **show the meaning** of the word as used in the text; it isn't decoration. Each one is a small inline SVG (viewBox 240×180), drawn in the stage's gold (`currentColor`) and animated with CSS keyframes. Loops last 2–4 s and hold the meaningful state long enough to see. Everything stops under `prefers-reduced-motion`.
 
-- Inline SVG, `viewBox="0 0 240 180"`, drawn with `currentColor` (gold on the dark stage) and two or three classes: `.s` stroke, `.f` fill, `.soft` faded. Keep it simple: under ~10 shapes, and **no long hand-drawn path data**.
-- It must **show the meaning**, not decorate. Pick a concrete scene from the word's sense, ideally the sense used in the text.
-- Use CSS keyframes that loop every 2–4 s. Useful primitives: draw a line (`stroke-dashoffset`), scale up from the base (`transform-origin:50% 100%`), move along a path (`offset-path`), rotate, pulse, expanding rings.
-- An optional tiny Turkish caption inside the SVG (`.lbl`, e.g. "göğe doğru"). Arabic inside the SVG only as a separate `<text>`; never mix Arabic and Latin in one `<text>` (the bidi order breaks).
-- Wrap everything in `@media (prefers-reduced-motion: reduce)` → no animation.
+- Built-in animations are picked with `"mg": "<key>"`; the list of keys is in `SKILL.md`.
+- Captions come from `mgText`.
+- A lesson can define its own animation with `"mg": "custom"` (`mgSvg` + `meta.css`). Use this when the user describes a picture or no key fits.
 
-Ready-made idea library (reuse and extend it):
-
-| Meaning type | Scene |
-|---|---|
-| rise, ascend | dots floating up toward a glowing circle |
-| descend, slope | a ball rolling down an incline |
-| aim, direct, guide | an arrow rotating to align, then flying at a target |
-| mean, specify | a magnifier scanning three boxes and stopping on one |
-| disappointment, failure | a curve that rises, then falls ("umut → kırıklık") |
-| think, worry, whisper to oneself | a head outline with thought bubbles popping in turn |
-| differ, disagree | two paths branching from one point |
-| scarce, dim, little | a stone with a weakly flickering light |
-| break out, erupt (war, fire) | flames growing with sparks rising |
-| stare, gaze | an eye that blinks, then opens wide |
-| appear, manifest, light | rays rotating with a pulsing centre and an expanding ring |
-| grow, sprout | grass blades growing from the ground, staggered |
-| fly, hover, circle | two birds orbiting with flapping wings |
-| shout, cry out | a speaker cone with expanding sound arcs |
-| condition → result | two circles with a pulse travelling from cause to effect |
-| break, shatter (`break`) | a chain snaps in the middle |
-| embrace, hold (`embrace`) | two arms close around a glowing centre |
-| evaporate, vanish (`vanish`) | wisps of steam rise from a dish and fade |
-| eat, drink, run, open, close, give, take… | invent an equally simple scene in the same visual language |
-
-Captions inside an animation come from the card's `mgText`; each key has a generic default. Never hard-code a lesson's own words into the `MG` strings in the template: that leaks one lesson's captions into every other lesson (this happened with the first version of `shart`). The full key list with caption slots is in `SKILL.md`.
+**How to build them**, from technology choice (SVG/CSS first; JavaScript, canvas or three.js only as a skill change) to the drawing and motion kits, the description-to-animation method and a tested example, is in [`motion-graphics.md`](motion-graphics.md).
 
 ## 7. Root highlighting algorithm
 

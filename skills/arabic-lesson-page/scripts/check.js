@@ -18,4 +18,15 @@ for(const [name,hash,w,scheme,key] of shots){
   if(key){await p.keyboard.press(key);await p.waitForTimeout(1500)}
   const sw=await p.evaluate(()=>document.documentElement.scrollWidth);if(sw>w)errs.push(`${name}: horizontal overflow ${sw}px > ${w}px`);
   await p.screenshot({path:path.join(out,name+'.png'),fullPage:w<500});await p.close();}
-await b.close();console.log(errs.length?'PROBLEMS:\n'+errs.join('\n'):'OK: no errors, no overflow. Screenshots in '+out);process.exitCode=errs.length?1:0;})();
+// One picture per card's animation (two moments, side by side in one file), to check motion graphics by eye.
+{const p=await b.newPage({viewport:{width:1300,height:860}});p.on('pageerror',e=>errs.push(`anim: ${e.message}`));
+ await p.goto('file://'+file+'#kelime-1');await p.waitForTimeout(800);
+ const n=await p.evaluate(()=>JSON.parse(document.getElementById('data').textContent).cards.length);
+ fs.mkdirSync(path.join(out,'anim'),{recursive:true});
+ for(let i=1;i<=n;i++){await p.goto('file://'+file+'#kelime-'+i);
+   for(const [t,tag] of [[700,'a'],[1900,'b']]){await p.waitForTimeout(t===700?700:1200);
+     const el=await p.$('.stage .mg');if(!el){errs.push(`card ${i}: no animation rendered`);break}
+     const box=await el.boundingBox();if(!box||box.width<50)errs.push(`card ${i}: animation has no size`);
+     await el.screenshot({path:path.join(out,'anim',`card${String(i).padStart(2,'0')}-${tag}.png`)});}}
+ await p.close();}
+await b.close();console.log(errs.length?'PROBLEMS:\n'+errs.join('\n'):'OK: no errors, no overflow. Screenshots in '+out+' (animations: '+out+'/anim, two moments per card)');process.exitCode=errs.length?1:0;})();

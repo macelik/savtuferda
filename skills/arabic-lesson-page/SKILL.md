@@ -36,7 +36,9 @@ Run all commands from the user's working directory.
    ```bash
    node $SKILL_DIR/scripts/check.js lessons/<slug>/<Name>-Ders.html lessons/<slug>/qa
    ```
-   It must print `OK`. Then **open and look at every screenshot** with the Read tool. In the `root-dark.png` screenshot, the gold letters inside the three forms must be exactly the root letters.
+   It must print `OK`. Then **open and look at every screenshot** with the Read tool:
+   - In the `root-dark.png` screenshot, the gold letters inside the three forms must be exactly the root letters.
+   - In `anim/`, look at both moments (`-a`, `-b`) of every **custom** animation, and of any built-in one you're unsure about. The two moments must differ visibly, and nothing may be cut off.
 7. **Report** (format at the end of this file).
 
 ## Card fields
@@ -117,7 +119,13 @@ When a mark is a whole structure (a conditional, an idiom, a word pair) or the r
 
 ## Motion graphics (`mg`) and their captions (`mgText`)
 
-Pick the scene that shows **the sense used in this text**. Ask: "If a student only saw this animation, would they guess the word?" If no key passes that test, use the closest one and say so in the report.
+Pick the scene that shows **the sense used in this text**. Ask: "If a student only saw this animation, would they guess the word?"
+
+Make a **custom animation** (`"mg": "custom"`) when:
+- no key below passes that test, or
+- the user describes the picture they want ("a door opens and light comes out").
+
+Custom animations are small SVG drawings animated with CSS, written straight into the card. **Read `references/motion-graphics.md` before making one.** It has the drawing kit, the motion kit, the step-by-step method and a tested example.
 
 | key | scene | use for | caption slots |
 |---|---|---|---|

@@ -7,6 +7,7 @@ MG_KEYS = {'point','aim','rise','deflate','slope','thought','diverge','dim','fla
 REQUIRED_CARD = ['word','translit','levels','verse','verseTr','sarf','sarfNote','def','defTr',
                  'syn','meanings','extras','qs','gist','mg']
 
+UNSAFE = re.compile(r'<\s*(script|foreignObject|image|iframe|object|embed)|\son\w+\s*=|javascript:|(href|src)\s*=\s*["\']?\s*(https?:|//)|url\(\s*["\']?\s*(https?:|//)', re.I)
 HARAKA = re.compile('[\u064B-\u0652]')
 ROOT = re.compile(r'Kök:</b>\s*\S+-\S+|<b>[^<\s]+-[^<\s]+</b>')
 
@@ -36,7 +37,12 @@ def main(src, dst):
     for i, c in enumerate(cards, 1):
         for k in REQUIRED_CARD:
             if k not in c: errs.append(f'card {i}: missing "{k}"')
-        if c.get('mg') not in MG_KEYS: errs.append(f'card {i}: unknown mg "{c.get("mg")}" (allowed: {", ".join(sorted(MG_KEYS))})')
+        if c.get('mg') == 'custom':
+            svg = c.get('mgSvg', '')
+            if not svg.strip(): errs.append(f'card {i}: mg "custom" needs "mgSvg" (inner SVG markup, viewBox 0 0 240 180)')
+            if UNSAFE.search(svg): errs.append(f'card {i}: mgSvg may not contain <script>, <foreignObject>, <image>, event handlers, external URLs or javascript:')
+            if len(svg) > 6000: errs.append(f'card {i}: mgSvg is {len(svg)} chars; keep custom animations simple (< 6000)')
+        elif c.get('mg') not in MG_KEYS: errs.append(f'card {i}: unknown mg "{c.get("mg")}" (allowed: {", ".join(sorted(MG_KEYS))})')
         v = c.get('verse', '')
         if v.count('<mark>') != 1: errs.append(f'card {i}: verse must contain exactly one <mark>')
         elif bare(re.search(r'<mark>(.*?)</mark>', v).group(1)) not in poem_marks:
@@ -47,6 +53,9 @@ def main(src, dst):
         if not ROOT.search(c.get('sarfNote', '')): errs.append(f'card {i}: sarfNote must contain "<b>Kök:</b> x-y-z" (or <b>x-y-z</b>)')
         if not set(c.get('levels', [])) <= {'A2', 'B1', 'B2'} or not c.get('levels'):
             errs.append(f'card {i}: levels must be a non-empty subset of A2, B1, B2')
+    css = m.get('css', '')
+    if UNSAFE.search(css) or '</style' in css.lower() or '@import' in css.lower():
+        errs.append('meta.css may only hold plain CSS (no </style>, @import, url(http…), script)')
     todo = sorted({p for p, _ in find_todo(d)})
     if todo:
         errs.append('unfilled TODO at: ' + ', '.join(todo[:25]) + (' …' if len(todo) > 25 else ''))
