@@ -276,6 +276,10 @@ footer p{margin:0 0 8px}
 @keyframes mgBubble{0%,10%{transform:scale(0);opacity:0}25%,80%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}
 @keyframes mgTravel{0%{offset-distance:0%;opacity:0}10%{opacity:1}90%{opacity:1}100%{offset-distance:100%;opacity:0}}
 @keyframes mgFlap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-.6)}}
+@keyframes mgSnapL{0%,35%{transform:none}50%,85%{transform:translate(-8px,12px) rotate(-16deg)}100%{transform:none}}
+@keyframes mgSnapR{0%,35%{transform:none}50%,85%{transform:translate(8px,12px) rotate(16deg)}100%{transform:none}}
+@keyframes mgHugL{0%,10%{transform:translateX(-22px) rotate(-25deg)}45%,85%{transform:translateX(16px) rotate(0)}100%{transform:translateX(-22px) rotate(-25deg)}}
+@keyframes mgHugR{0%,10%{transform:translateX(22px) rotate(25deg)}45%,85%{transform:translateX(-16px) rotate(0)}100%{transform:translateX(22px) rotate(25deg)}}
 @keyframes mgSpark{0%{transform:translate(0,0);opacity:1}100%{transform:translate(var(--dx),-70px);opacity:0}}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -395,25 +399,25 @@ const trIn=h=>h?`<span class="tr" tabindex="0">${h}</span>`:'';
 /* ---------- per-word extras: short gist + motion graphic ---------- */
 const MG={
 point:`<rect x="30" y="72" width="50" height="22" rx="8" class="s soft"/><rect x="95" y="72" width="50" height="22" rx="8" class="s" style="animation:mgPick 3.2s infinite"/><rect x="160" y="72" width="50" height="22" rx="8" class="s soft"/>
-<g style="animation:mgScan 3.2s ease-in-out infinite"><circle cx="120" cy="83" r="26" class="s"/><path d="M139 102 L156 122" class="s" stroke-width="5"/></g><text x="120" y="152" text-anchor="middle" class="lbl">tam olarak bunu</text>`,
+<g style="animation:mgScan 3.2s ease-in-out infinite"><circle cx="120" cy="83" r="26" class="s"/><path d="M139 102 L156 122" class="s" stroke-width="5"/></g><text x="120" y="152" text-anchor="middle" class="lbl">{{cap}}</text>`,
 aim:`<g style="transform-origin:center"><circle cx="190" cy="90" r="38" class="s soft"/><circle cx="190" cy="90" r="24" class="s soft"/><circle cx="190" cy="90" r="9" class="f" style="animation:mgHit 2.8s infinite"/></g>
 <g style="animation:mgAim 2.8s cubic-bezier(.5,0,.3,1) infinite;transform-origin:0% 50%"><path d="M30 90 H88" class="s" stroke-width="4"/><path d="M78 80 L92 90 L78 100" class="s" stroke-width="4"/><path d="M30 90 l-8 -8 M30 90 l-8 8" class="s"/></g>`,
 rise:`<circle cx="120" cy="30" r="16" class="f" style="opacity:.35;animation:mgPulse 2.4s infinite;transform-origin:center"/><circle cx="120" cy="30" r="8" class="f"/>
 <path d="M120 160 V45" class="s soft" stroke-dasharray="3 8"/>
 ${[0,1,2].map(i=>`<circle cx="${100+i*20}" cy="150" r="5" class="f" style="animation:mgFloat 2.7s ${i*.8}s ease-in infinite"/>`).join('')}
-<path d="M20 160 H220" class="s soft"/><text x="120" y="176" text-anchor="middle" class="lbl">göğe doğru</text>`,
+<path d="M20 160 H220" class="s soft"/><text x="120" y="176" text-anchor="middle" class="lbl">{{cap}}</text>`,
 deflate:`<path d="M20 150 H220" class="s soft"/><path d="M30 145 C70 140 90 40 125 40 S170 140 215 148" class="s" style="--len:300;stroke-dasharray:300;animation:mgDraw 3.4s ease-in-out infinite"/>
-<text x="125" y="28" text-anchor="middle" class="lbl">umut</text><text x="205" y="172" text-anchor="middle" class="lbl">kırıklık</text>`,
+<text x="125" y="28" text-anchor="middle" class="lbl">{{a}}</text><text x="205" y="172" text-anchor="middle" class="lbl">{{b}}</text>`,
 slope:`<path d="M15 45 L225 150" class="s" stroke-width="4"/><path d="M15 150 H225" class="s soft"/><path d="M15 45 V150" class="s soft"/>
 <circle r="11" class="f" style="offset-path:path('M28 25 L222 122');offset-rotate:0deg;animation:mgTravel 2.6s cubic-bezier(.55,0,.9,.5) infinite"/>`,
 thought:`<path d="M60 160 C40 160 35 130 40 115 C30 110 35 98 42 96 C40 70 58 52 82 52 C108 52 122 72 120 98 C118 118 105 128 100 160" class="s"/>
 <circle cx="130" cy="78" r="5" class="f" style="animation:mgBubble 3s infinite;transform-origin:center"/><circle cx="150" cy="58" r="8" class="f" style="animation:mgBubble 3s .3s infinite;transform-origin:center"/>
 <g style="animation:mgBubble 3s .6s infinite;transform-origin:center"><ellipse cx="190" cy="34" rx="34" ry="22" class="s"/><circle cx="178" cy="34" r="3" class="f"/><circle cx="190" cy="34" r="3" class="f"/><circle cx="202" cy="34" r="3" class="f"/></g>`,
 diverge:`<circle cx="36" cy="90" r="8" class="f"/><path d="M36 90 C100 90 140 40 210 36" class="s" style="--len:200;stroke-dasharray:200;animation:mgDraw 3s infinite"/><path d="M36 90 C100 90 140 140 210 144" class="s" style="--len:200;stroke-dasharray:200;animation:mgDraw 3s .2s infinite"/>
-<text x="210" y="24" text-anchor="middle" class="lbl">rivayet A</text><text x="210" y="168" text-anchor="middle" class="lbl">rivayet B</text>`,
+<text x="210" y="24" text-anchor="middle" class="lbl">{{a}}</text><text x="210" y="168" text-anchor="middle" class="lbl">{{b}}</text>`,
 dim:`<path d="M60 150 L52 108 L80 74 L150 70 L188 100 L184 150 Z" class="s"/><path d="M90 150 L96 112 M140 150 L130 96" class="s soft"/>
 <g style="animation:mgFlick 2.6s infinite"><circle cx="120" cy="40" r="7" class="f"/>${[-50,-25,0,25,50].map(a=>`<path d="M120 40 L${120+Math.sin(a*Math.PI/180)*30} ${40-Math.cos(a*Math.PI/180)*30}" class="s" stroke-width="2"/>`).join('')}</g>
-<text x="120" y="172" text-anchor="middle" class="lbl">ışığı kıt bir taş</text>`,
+<text x="120" y="172" text-anchor="middle" class="lbl">{{cap}}</text>`,
 flame:`<path d="M30 160 H210" class="s soft"/>
 ${[[120,1.15,0],[88,.8,.3],[152,.85,.55]].map(([x,s,d])=>`<path d="M${x} 158 C${x-30*s} 140 ${x-20*s} ${120-40*s} ${x} ${158-110*s} C${x+20*s} ${120-40*s} ${x+30*s} 140 ${x} 158 Z" class="f" style="opacity:${s>1?1:.55};transform-origin:50% 100%;animation:mgFlame ${0.9+d}s ${d}s ease-in-out infinite"/>`).join('')}
 ${[-30,-5,22,40].map((dx,i)=>`<circle cx="120" cy="70" r="2.5" class="f" style="--dx:${dx}px;animation:mgSpark 1.6s ${i*.4}s ease-out infinite"/>`).join('')}`,
@@ -424,21 +428,39 @@ radiate:`<g style="transform-origin:center;animation:mgSpin 18s linear infinite"
 <circle cx="120" cy="90" r="40" class="s" style="transform-origin:center;animation:mgRing 2.6s infinite"/>`,
 grow:`<path d="M20 150 H220" class="s"/>
 ${[[50,60,-8],[80,90,4],[110,70,-4],[135,105,6],[165,75,-6],[192,55,5]].map(([x,h,b],i)=>`<path d="M${x} 150 Q${x+b} ${150-h/2} ${x+b*2} ${150-h}" class="s" stroke-width="4" style="transform-origin:50% 100%;animation:mgGrow 3.4s ${i*.15}s ease-out infinite"/>`).join('')}
-<text x="120" y="172" text-anchor="middle" class="lbl">kelimeler ot gibi biter</text>`,
+<text x="120" y="172" text-anchor="middle" class="lbl">{{cap}}</text>`,
 shart:`<circle cx="60" cy="80" r="40" class="s"/><circle cx="180" cy="80" r="40" class="s"/>
-<text x="60" y="88" text-anchor="middle">إيمان</text><text x="180" y="88" text-anchor="middle">أمن</text>
+<text x="60" y="88" text-anchor="middle" style="font-size:{{aFs}}px">{{a}}</text><text x="180" y="88" text-anchor="middle" style="font-size:{{bFs}}px">{{b}}</text>
 <path d="M104 80 H136" class="s soft"/><circle r="6" class="f" style="offset-path:path('M100 80 L140 80');animation:mgTravel 1.8s ease-in-out infinite"/>
-<text x="60" y="142" text-anchor="middle" class="lbl">içte inanç</text><text x="180" y="142" text-anchor="middle" class="lbl">dışta güven</text>
-<text x="120" y="172" text-anchor="middle">أ م ن</text>`,
+<text x="60" y="142" text-anchor="middle" class="lbl">{{aTr}}</text><text x="180" y="142" text-anchor="middle" class="lbl">{{bTr}}</text>
+<text x="120" y="172" text-anchor="middle">{{mid}}</text>`,
 birds:`<circle cx="120" cy="90" r="58" class="s soft" stroke-dasharray="2 7"/>
 ${[0,180].map(r=>`<g style="transform-origin:120px 90px;transform-box:view-box;animation:mgSpin 6s linear infinite;animation-delay:${-r/60}s"><g transform="translate(120 32)"><path d="M-14 0 Q-7 -9 0 0 Q7 -9 14 0" class="s" style="transform-origin:center;animation:mgFlap .7s ease-in-out infinite"/></g></g>`).join('')}
-<text x="120" y="96" text-anchor="middle" class="lbl">iki el · iki güvercin</text>`,
+<text x="120" y="96" text-anchor="middle" class="lbl">{{cap}}</text>`,
 shout:`<path d="M40 70 L70 70 L100 45 L100 135 L70 110 L40 110 Z" class="s"/>
 ${[0,1,2].map(i=>`<path d="M120 50 Q150 90 120 130" class="s" style="transform-origin:0% 50%;animation:mgRing 1.8s ${i*.6}s ease-out infinite"/>`).join('')}
-<text x="120" y="170" text-anchor="middle" class="lbl">birden, yüksek sesle</text>`
+<text x="120" y="170" text-anchor="middle" class="lbl">{{cap}}</text>`,
+break:`<g style="transform-box:view-box;transform-origin:114px 90px;animation:mgSnapL 3s ease-in-out infinite"><rect x="22" y="78" width="44" height="24" rx="12" class="s"/><rect x="58" y="78" width="44" height="24" rx="12" class="s"/><path d="M102 90 H114" class="s"/></g>
+<g style="transform-box:view-box;transform-origin:126px 90px;animation:mgSnapR 3s ease-in-out infinite"><path d="M126 90 H138" class="s"/><rect x="138" y="78" width="44" height="24" rx="12" class="s"/><rect x="174" y="78" width="44" height="24" rx="12" class="s"/></g>
+${[-28,-8,12,30].map((dx,i)=>`<circle cx="120" cy="92" r="2.5" class="f" style="--dx:${dx}px;animation:mgSpark 3s ${1.4+i*.05}s ease-out infinite"/>`).join('')}
+<text x="120" y="150" text-anchor="middle" class="lbl">{{cap}}</text>`,
+embrace:`<circle cx="120" cy="95" r="13" class="f" style="transform-origin:center;animation:mgPulse 2.4s infinite"/>
+<g style="transform-box:view-box;transform-origin:70px 95px;animation:mgHugL 3s ease-in-out infinite"><path d="M78 45 Q40 95 78 145" class="s" stroke-width="5"/></g>
+<g style="transform-box:view-box;transform-origin:170px 95px;animation:mgHugR 3s ease-in-out infinite"><path d="M162 45 Q200 95 162 145" class="s" stroke-width="5"/></g>
+<text x="120" y="172" text-anchor="middle" class="lbl">{{cap}}</text>`,
+vanish:`<path d="M60 150 Q120 168 180 150" class="s" stroke-width="4"/>
+${[100,120,140].map((x,i)=>`<path d="M${x} 140 q-10 -14 0 -28 q10 -14 0 -28" class="s" style="animation:mgFloat 2.7s ${i*.8}s ease-out infinite"/>`).join('')}
+<text x="120" y="176" text-anchor="middle" class="lbl">{{cap}}</text>`
 };
 const GIST=C.map(c=>c.gist||'');
-const mgSvg=i=>`<svg class="mg" viewBox="0 0 240 180" role="img" aria-label="${GIST[i]}">${MG[C[i].mg]||MG.radiate}</svg>`;
+/* default captions; a card overrides them with "mgText": {cap,a,b,aTr,bTr,mid} */
+const MGT={point:{cap:'tam olarak bunu'},rise:{cap:'yukarı doğru'},deflate:{a:'umut',b:'kırıklık'},diverge:{a:'bir görüş',b:'başka görüş'},
+  dim:{cap:'ışığı kıt'},grow:{cap:'yeşerir, büyür'},shart:{a:'شَرْط',b:'جَوَاب',aTr:'eğer…',bTr:'…o zaman',mid:''},birds:{cap:'süzülür, uçar'},
+  shout:{cap:'yüksek sesle'},break:{cap:'kırılır'},embrace:{cap:'kucaklar, sarar'},vanish:{cap:'buharlaşıp kaybolur'}};
+const escT=t=>String(t).replace(/[&<>]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
+const fitFs=w=>{const n=bare(w||'').length;return n>9?11:n>6?14:20};
+const mgSvg=i=>{const c=C[i],k=MG[c.mg]?c.mg:'radiate',t=Object.assign({},MGT[k]||{},c.mgText||{});t.aFs=fitFs(t.a);t.bFs=fitFs(t.b);
+  return `<svg class="mg" viewBox="0 0 240 180" role="img" aria-label="${GIST[i]}">${MG[k].replace(/\{\{(\w+)\}\}/g,(_,n)=>escT(t[n]||''))}</svg>`};
 
 /* ---------- root highlighting ---------- */
 const HAMZA='ءأإآؤئا', WEAK='اوىيئ';

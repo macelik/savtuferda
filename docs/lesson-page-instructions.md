@@ -101,6 +101,7 @@ All content lives in one JSON file in `lesson/data/`. `lesson/build.py` validate
     "sources": ["<span lang=\"ar\">المعجم الوسيط …</span>", "Kur'an-ı Kerim: …"],
     "notes": ["Şiir, Mahmud Derviş'in … şiiridir.", "Tanımlar A2–B1 …"]
   },
+  "parse": ["unit 1: every verb -> mazi/muzari + root + meaning; subject; object", "…"],   // agent's working notes per unit; not shown on the page
   "poem": ["في القدس، <mark>أَعني</mark> داخلَ السُّور القديمِ،", "…"],   // text units, target words in <mark>
   "rows": [["1", "في القدس، أَعني …", "Kudüs'te — yani eski surların içinde,"], "…"],  // [no, Arabic, Turkish], same length as poem
   "cards": [
@@ -110,6 +111,7 @@ All content lives in one JSON file in `lesson/data/`. `lesson/build.py` validate
       "levels": ["A2","B1"],
       "gist": "kastetmek",                 // 1–3 Turkish words, shown under the animation and on flash cards
       "mg": "point",                       // motion graphic key, see §6 (must exist in MG in template.html)
+      "mgText": {"cap": "tam olarak bunu"}, // optional captions inside the animation (slots per key: cap | a,b | a,b,aTr,bTr,mid)
       "short": "إن لم…",                   // optional: label in the word strip (default: unvowelled word)
       "flashFront": "تُؤْمِنُوا / تَأْمَنُوا", // optional: front of the flash card (default: word)
       "verse": "في القدس، <mark>أَعني</mark> داخلَ السُّور القديمِ،",  // the unit, mark text must equal the <mark> in poem[]
@@ -167,7 +169,12 @@ Ready-made idea library (reuse and extend it):
 | fly, hover, circle | two birds orbiting with flapping wings |
 | shout, cry out | a speaker cone with expanding sound arcs |
 | condition → result | two circles with a pulse travelling from cause to effect |
+| break, shatter (`break`) | a chain snaps in the middle |
+| embrace, hold (`embrace`) | two arms close around a glowing centre |
+| evaporate, vanish (`vanish`) | wisps of steam rise from a dish and fade |
 | eat, drink, run, open, close, give, take… | invent an equally simple scene in the same visual language |
+
+Captions inside an animation come from the card's `mgText`; each key has a generic default. Never hard-code a lesson's own words into the `MG` strings in the template: that leaks one lesson's captions into every other lesson (this happened with the first version of `shart`). The full key list with caption slots is in `.claude/skills/arabic-lesson-page/SKILL.md`.
 
 ## 7. Root highlighting algorithm
 
