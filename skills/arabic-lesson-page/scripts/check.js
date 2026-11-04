@@ -28,5 +28,10 @@ for(const [name,hash,w,scheme,key] of shots){
      const el=await p.$('.stage .mg');if(!el){errs.push(`card ${i}: no animation rendered`);break}
      const box=await el.boundingBox();if(!box||box.width<50)errs.push(`card ${i}: animation has no size`);
      await el.screenshot({path:path.join(out,'anim',`card${String(i).padStart(2,'0')}-${tag}.png`)});}}
- await p.close();}
-await b.close();console.log(errs.length?'PROBLEMS:\n'+errs.join('\n'):'OK: no errors, no overflow. Screenshots in '+out+' (animations: '+out+'/anim, two moments per card)');process.exitCode=errs.length?1:0;})();
+ await p.close();
+ // Rest state: what users with reduced motion (and the first frame) see. It must show the meaning.
+ const r=await b.newPage({viewport:{width:1300,height:860},reducedMotion:'reduce'});
+ for(let i=1;i<=n;i++){await r.goto('file://'+file+'#kelime-'+i);await r.waitForTimeout(400);
+   const el=await r.$('.stage .mg');if(el)await el.screenshot({path:path.join(out,'anim',`card${String(i).padStart(2,'0')}-rest.png`)});}
+ await r.close();}
+await b.close();console.log(errs.length?'PROBLEMS:\n'+errs.join('\n'):'OK: no errors, no overflow. Screenshots in '+out+' (animations: '+out+'/anim, two moments + rest state per card)');process.exitCode=errs.length?1:0;})();

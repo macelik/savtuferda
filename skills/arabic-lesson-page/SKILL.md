@@ -38,7 +38,7 @@ Run all commands from the user's working directory.
    ```
    It must print `OK`. Then **open and look at every screenshot** with the Read tool:
    - In the `root-dark.png` screenshot, the gold letters inside the three forms must be exactly the root letters.
-   - In `anim/`, look at both moments (`-a`, `-b`) of every **custom** animation, and of any built-in one you're unsure about. The two moments must differ visibly, and nothing may be cut off.
+   - In `anim/`, look at both moments (`-a`, `-b`) and the rest state (`-rest`) of every **custom** animation, and of any built-in one you're unsure about. The two moments must differ visibly, nothing may be cut off, and `-rest` must show only the meaningful end state.
 7. **Report** (format at the end of this file).
 
 ## Card fields

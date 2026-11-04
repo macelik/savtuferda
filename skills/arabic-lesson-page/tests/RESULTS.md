@@ -21,3 +21,24 @@ What changed between versions (see git log):
 The v2 output, with the two remaining slips fixed by hand (line 7 translation, *wa-ndaṯar*), is kept as `examples/irade-el-hayat.json`.
 
 When you change the skill, re-run this trial with a fresh Haiku agent and add a column here. Never put lines from the test poem into SKILL.md.
+
+## Custom animation trial
+
+Haiku was given an installed copy of the skill, the Şabbi lesson and two plain-language animation requests:
+- card 4 «يَنْجَلِي»: "a night sky with a crescent moon and stars; the sun rises from the horizon and the stars fade";
+- card 9 «صَفْعَة»: "an open hand swings in and hits; the impact should be visible".
+
+Its only guide was `references/motion-graphics.md`.
+
+| Check | Result |
+|---|---|
+| Valid custom SVG + keyframes, build and QA pass | ✓ both |
+| Animation reads as the described scene | ✓ sunrise very clear; ✓ slap recognisable, impact burst on contact |
+| Self-correction from the `anim/` screenshots | ✓ it reworked the slap after its first version looked cluttered |
+| Rest state (motion off) shows only the end state | ✗ sunrise rested with moon, stars **and** sun; its report claimed otherwise |
+
+Changes made after this trial:
+- `check.js` now saves `cardNN-rest.png` for every card.
+- The guide tells the agent to check the rest state, and teaches the "background-coloured rectangle as a mask" trick Haiku used.
+- The rest-state check also exposed five built-in animations of the template resting on their "before" state: `break`, `embrace`, `slope`, `aim` and `birds`. All five are fixed.
+- Both custom animations (with the rest-state fix) are kept in `examples/irade-el-hayat.json`.

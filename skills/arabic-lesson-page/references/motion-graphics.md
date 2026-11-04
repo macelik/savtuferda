@@ -29,6 +29,7 @@ Lesson JSON may only contain **Level 1**. `build.py` rejects scripts, event hand
 | `lbl` | small Turkish caption text (12 px). For Arabic text use plain `<text>` (Amiri, 20 px). |
 
 - **Simplicity budget: at most ~10 shapes**, with no long hand-drawn path data. Use circles, rects, lines and a few `Q`/`C` curves. A silhouette made of 3 shapes beats a detailed drawing.
+- **Masks without masks.** To make something rise from behind the horizon or come out of a box, draw it first, then cover the hidden area with a rectangle filled `var(--stage)` and draw the edge line on top. The rectangle hides whatever is below it.
 - **Never mix Arabic and Latin in one `<text>`.** The letter order breaks; use two `<text>` elements.
 
 ## 3. The motion kit
@@ -77,8 +78,9 @@ When the teacher or user describes what they want ("a door opens and light comes
 4. **Make the rest state meaningful.** Users who turn off motion (the `prefers-reduced-motion` setting) and the first frame of the page see the shapes **without** animation. So set each shape's own inline `transform`/`opacity` to the **meaningful end state** (door open, light visible). Let the keyframes start from the "before" state. Never leave the key shape at `opacity:0` at rest.
 5. **Add a caption** of 1–4 Turkish words through `{{cap}}` and `"mgText": {"cap": "…"}`. The caption names the image, not the dictionary meaning.
 6. **Build, then look:**
-   - `check.js` saves two moments of every card's animation to `<qa>/anim/cardNN-a.png` and `-b.png`. Read both images.
-   - Ask yourself: are the two moments clearly different? Is the end state visible? Is anything cut off at the edges?
+   - `check.js` saves two moments of every card's animation to `<qa>/anim/cardNN-a.png` and `-b.png`, plus the **rest state** to `cardNN-rest.png` (motion off). Read all three.
+   - Ask yourself: are the two moments clearly different? Is anything cut off at the edges?
+   - Does `-rest` show **only** the meaningful end state? If before- and after-shapes appear together (moon *and* sun, closed *and* open), an element is missing its inline end-state `opacity`/`transform`.
    - Fix what's wrong and rebuild.
 
 ## 5. Custom animation in a lesson (`"mg": "custom"`)
@@ -116,6 +118,7 @@ Rules for custom animations:
   - an `mgSvg` over 6000 characters.
 
   If you hit the size limit, the drawing is too detailed.
+- More tested examples: cards 4 (sunrise over the horizon, stars fading) and 9 (a hand slaps, a burst on impact) in `examples/irade-el-hayat.json`.
 - Prefer a built-in key when one fits. Custom animations are for ideas the kit doesn't cover, or when the teacher asks for a specific picture.
 
 ## 6. Page-level motion (not per word)
